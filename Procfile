@@ -1,1 +1,1 @@
-web: gunicorn BanqueEpreuves.wsgi
+web: gunicorn banque_epreuves.wsgi
