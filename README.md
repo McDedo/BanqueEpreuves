@@ -19,7 +19,7 @@ Banque d'Épreuves est une plateforme Django dédiée à l'accès et à la prép
 1. **Cloner le dépôt**
 
 ```bash
-git clone https://github.com/ton-utilisateur/BanqueEpreuves.git
+git clone https://github.com/McDedo/BanqueEpreuves.git
 cd BanqueEpreuves
 
 2. **Créer un environnement virtuel (recommandé)**
