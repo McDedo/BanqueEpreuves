@@ -19,8 +19,8 @@ Banque d'Épreuves est une plateforme Django dédiée à l'accès et à la prép
 1. **Cloner le dépôt**
 
 ```bash
-git clone https://github.com/ton-utilisateur/banque-epreuves.git
-cd banque-epreuves
+git clone https://github.com/ton-utilisateur/BanqueEpreuves.git
+cd BanqueEpreuves
 
 2. **Créer un environnement virtuel (recommandé)**
 
@@ -28,6 +28,7 @@ python -m venv env
 source env/bin/activate    # macOS/Linux
 env\Scripts\activate       # Windows
 
+3. **Installer les dépendances**
 pip install -r requirements.txt
 
 python manage.py migrate
