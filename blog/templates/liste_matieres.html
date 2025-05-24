@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="py-12 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">Toutes les matières</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for matiere in matieres %}
+        <a href="{% url 'epreuves_par_matiere' matiere.id %}" class="block bg-white shadow-md hover:shadow-xl rounded-xl p-6 transition transform hover:-translate-y-1">
+          <div class="text-4xl mb-3 text-center">{{ matiere.icone }}</div>
+          <h2 class="text-xl font-semibold text-center">{{ matiere.nom }}</h2>
+          <p class="text-gray-500 text-sm text-center mt-1">{{ matiere.epreuve_set.count }} épreuves</p>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

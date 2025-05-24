@@ -1,0 +1,266 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Banque d'Épreuves{% endblock %}
+
+{% block content %}
+<!-- Section de présentation -->
+<section class="py-5 text-white" style="background-color: #007bff;">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Texte d'accroche -->
+      <div class="col-md-6 mb-4 mb-md-0">
+        <h1 class="fw-bold mb-3">Accédez à des milliers d'épreuves académiques</h1>
+        <p class="lead">Préparez-vous efficacement pour vos examens grâce à notre vaste banque d'épreuves et de ressources.</p>
+        <div class="mt-4">
+          <a href="#" class="btn btn-light text-primary me-3">Commencer ➡</a>
+          <a href="#" class="btn btn-outline-light">En savoir plus</a>
+        </div>
+      </div>
+
+      <!-- Matières -->
+      <div class="col-md-6">
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="bg-white text-dark p-3 rounded shadow-sm text-center">
+              <h5 class="fw-bold">📐 Mathématiques</h5>
+              <p>{{ maths_count }} épreuves</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="bg-white text-dark p-3 rounded shadow-sm text-center">
+              <h5 class="fw-bold">⚛️ Physique</h5>
+              <p>{{ physique_count }} épreuves</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="bg-white text-dark p-3 rounded shadow-sm text-center">
+              <h5 class="fw-bold">📚 Français</h5>
+              <p>{{ francais_count }} épreuves</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="bg-white text-dark p-3 rounded shadow-sm text-center">
+              <h5 class="fw-bold">🔬 SVT</h5>
+              <p>{{ svt_count }} épreuves</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Deuxième section : barre de recherche ajustée -->
+<section class="py-5 bg-white border-top">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <form class="d-flex align-items-center flex-wrap gap-2" method="GET" action="{% url 'rechercher' %}">
+          <input type="text" name="q" class="form-control recherche-input" 
+                 placeholder="Rechercher par matière, niveau ou année ..." />
+
+          <button type="button" class="btn btn-outline-secondary filtre-btn">
+            <i class="bi bi-funnel"></i> Filtres
+          </button>
+
+          <button type="submit" class="btn btn-primary">
+            🔍 Rechercher
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section : Épreuves populaires -->
+<section class="py-5 bg-white border-top">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 class="fw-bold">Épreuves populaires</h3>
+      <a href="{% url 'epreuves' %}" class="btn btn-outline-secondary voir-tout-btn">
+        Voir tout ➡
+      </a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+      {% for epreuve in epreuves_populaires %}
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0">
+          <img src="{{ epreuve.image_url }}" class="card-img-top" alt="Illustration matière" style="height: 160px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title fw-bold">{{ epreuve.titre }}</h5>
+            <p class="text-muted mb-1">{{ epreuve.matiere.nom }} - {{ epreuve.annee }}</p>
+            <p class="mb-2">
+              <strong>{{ epreuve.niveau }}</strong> · {{ epreuve.telechargements }} téléchargements
+            </p>
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'aperçu_epreuve' epreuve.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
+              <a href="{% url 'telecharger_epreuve' epreuve.id %}" class="btn btn-primary">Télécharger</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Section :  -->
+<section style="background-color: white; padding: 4rem 0; text-align: center;">
+  <div class="container mx-auto px-4">
+    <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem;">
+      Des milliers d'épreuves académiques en un seul endroit
+    </h2>
+    <p style="color: #6B7280; font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
+      ExamenHub vous offre un accès illimité à une collection complète d'épreuves pour vous aider à vous préparer efficacement à vos examens.
+    </p>
+  </div>
+</section>
+
+<!-- Section :  -->
+<section style="background-color: white; padding: 4rem 0;">
+  <div style="display: flex; justify-content: space-around; gap: 1.5rem; flex-wrap: wrap;" class="container mx-auto px-4">
+    
+    <!-- Bloc 1 : Épreuves récentes -->
+    <div style="background-color: #f3f4f6; padding: 2rem; border-radius: 0.75rem; flex: 1; min-width: 280px; text-align: center;">
+      <div style="font-size: 2rem; margin-bottom: 1rem;">🆕</div>
+      <h3 style="font-weight: bold; font-size: 1.25rem;">Épreuves récentes</h3>
+      <p style="color: #6B7280; margin: 1rem 0;">
+        Accédez aux dernières épreuves des examens et concours nationaux.
+      </p>
+      <a href="#" style="color: #2563eb; font-weight: 500; text-decoration: none;">
+        Voir les nouveautés ➡
+      </a>
+    </div>
+
+    <!-- Bloc 2 : Téléchargements illimités -->
+    <div style="background-color: #f3f4f6; padding: 2rem; border-radius: 0.75rem; flex: 1; min-width: 280px; text-align: center;">
+      <div style="font-size: 2rem; margin-bottom: 1rem;">⬇️</div>
+      <h3 style="font-weight: bold; font-size: 1.25rem;">Téléchargements illimités</h3>
+      <p style="color: #6B7280; margin: 1rem 0;">
+        Téléchargez autant d'épreuves que nécessaire pour votre préparation.
+      </p>
+      <a href="#" style="color: #2563eb; font-weight: 500; text-decoration: none;">
+        Découvrir le catalogue ➡
+      </a>
+    </div>
+
+    <!-- Bloc 3 : Communauté d'entraide -->
+    <div style="background-color: #f3f4f6; padding: 2rem; border-radius: 0.75rem; flex: 1; min-width: 280px; text-align: center;">
+      <div style="font-size: 2rem; margin-bottom: 1rem;">🤝</div>
+      <h3 style="font-weight: bold; font-size: 1.25rem;">Communauté d'entraide</h3>
+      <p style="color: #6B7280; margin: 1rem 0;">
+        Échangez avec d'autres étudiants et partagez vos connaissances.
+      </p>
+      <a href="#" style="color: #2563eb; font-weight: 500; text-decoration: none;">
+        Rejoindre la communauté ➡
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Section : Parcourir par matière -->
+<section style="background-color: #f3f4f6; padding: 4rem 0;">
+  <div class="container mx-auto px-4">
+
+    <!-- Titre + Lien -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+      <h2 style="font-weight: bold; font-size: 1.5rem;">Parcourir par matière</h2>
+      <a href="{% url 'liste_matieres' %}" style="color: #6B21A8; text-decoration: none; font-weight: 500;" onmouseover="this.style.color='#9333EA'" onmouseout="this.style.color='#6B21A8'">
+        Voir tout ➡
+      </a>
+    </div>
+
+    <!-- Blocs de matières cliquables -->
+    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: space-between;">
+      {% for matiere in matieres %}
+        <a href="{% url 'epreuves_par_matiere' matiere.id %}" style="text-decoration: none; color: inherit; flex: 1; min-width: 160px; max-width: 200px;">
+          <div style="background-color: white; padding: 2rem; border-radius: 0.75rem; text-align: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <div style="font-size: 2rem;">{{ matiere.icone }}</div>
+            <div style="font-weight: bold; margin-top: 0.5rem;">{{ matiere.nom }}</div>
+            <div style="color: #6B7280;">{{ matiere.epreuve_set.count }} épreuves</div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<!-- Section CTA -->
+<section class="bg-primary text-white text-center py-5">
+  <div class="container">
+    <h2 class="fw-bold mb-3">
+      Prêt à commencer votre préparation ?
+    </h2>
+    <p class="fw-semibold mb-4">
+      Rejoignez des milliers d'étudiants qui préparent efficacement leurs examens avec Banque Épreuves.
+    </p>
+    <a href="{% url 'register' %}" class="btn btn-light text-primary fw-bold">
+      Créer un compte gratuit
+    </a>
+  </div>
+</section>
+
+<!-- Pied de page -->
+<footer style="background-color: #1f2d3d;" class="text-light pt-5 pb-4 mt-5">
+  <div class="container">
+    <div class="row gy-4 gx-5">
+
+      <!-- Banque d'épreuves -->
+      <div class="col-md-3">
+        <h5 class="fw-bold mb-3">📚 Banque d'Épreuves</h5>
+        <p class="fw-normal">
+          La plateforme de référence pour accéder aux banques d'épreuves académiques et préparer efficacement vos examens.
+        </p>
+        <div class="d-flex gap-3 mt-3">
+          <a href="#" class="text-light"><i class="bi bi-facebook fs-5"></i></a>
+          <a href="#" class="text-light"><i class="bi bi-twitter-x fs-5"></i></a>
+          <a href="#" class="text-light"><i class="bi bi-linkedin fs-5"></i></a>
+        </div>
+      </div>
+
+      <!-- Ressources -->
+      <div class="col-md-3">
+        <h5 class="fw-bold mb-3">Ressources</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-light text-decoration-none d-block">Épreuves</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Matières</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Corrigés</a></li>
+        </ul>
+      </div>
+
+      <!-- Support -->
+      <div class="col-md-3">
+        <h5 class="fw-bold mb-3">Support</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-light text-decoration-none d-block">FAQ</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Contact</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Aide</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Signaler un problème</a></li>
+        </ul>
+      </div>
+
+      <!-- Légal -->
+      <div class="col-md-3">
+        <h5 class="fw-bold mb-3">Légal</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-light text-decoration-none d-block">Conditions d'utilisation</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Politique de confidentialité</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Mentions légales</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Cookies</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+</footer>
+
+
+
+
+
+
+{% endblock %}
