@@ -1,20 +1,34 @@
 # Banque d'Épreuves
 
-Cette plateforme Django permet d'accéder à des épreuves académiques, de les consulter et de se préparer efficacement aux examens.
+Banque d'Épreuves est une plateforme Django dédiée à l'accès et à la préparation des épreuves académiques. Elle permet aux étudiants de consulter des banques d’épreuves, des corrigés et des ressources pour mieux préparer leurs examens.
 
-## Installation
+---
 
-1. Cloner le dépôt
-2. Créer un environnement virtuel
-3. Installer les dépendances avec `pip install -r requirements.txt`
-4. Lancer le serveur avec `python manage.py runserver`
+## 🚀 Fonctionnalités principales
 
-## Fonctionnalités
+- Consultation des épreuves classées par matières et niveaux  
+- Téléchargement des corrigés  
+- Interface administrateur pour gérer les ressources  
+- Support multi-utilisateurs  
+- Responsive design pour une utilisation sur mobile et desktop
 
-- Consultation des épreuves
-- Téléchargement des corrigés
-- Interface administrateur personnalisée
+---
 
-## Auteur
+## 🛠️ Installation et configuration
 
-McDedo
+1. **Cloner le dépôt**
+
+```bash
+git clone https://github.com/ton-utilisateur/banque-epreuves.git
+cd banque-epreuves
+
+2. **Créer un environnement virtuel (recommandé)**
+
+python -m venv env
+source env/bin/activate    # macOS/Linux
+env\Scripts\activate       # Windows
+
+pip install -r requirements.txt
+
+python manage.py migrate
+
