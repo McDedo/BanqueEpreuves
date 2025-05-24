@@ -54,13 +54,15 @@ def rechercher(request):
     if query:
         resultats = Epreuve.objects.filter(
             Q(titre__icontains=query) |
-            Q(matiere__nom__icontains=query)
-        )
+            Q(matière__nom__icontains=query) |
+            Q(niveau__icontains=query)
+        ).distinct()
 
-    return render(request, 'rechercher.html', {
-        'query': query,
-        'resultats': resultats
-    })
+        context = {
+            'query': query,
+            'resultats': resultats
+        }
+        return render(request, 'rechercher.html', context)
 
 def home(request):
     epreuves_populaires = Epreuve.objects.order_by('-telechargements')[:4]

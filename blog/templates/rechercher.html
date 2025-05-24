@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Résultats de recherche pour : "{{ query }}"</h2>
+
+    {% if resultats %}
+        <div class="row mt-4">
+            {% for epreuve in resultats %}
+            <div class="col-md-6 mb-4">
+                <div class="card p-3">
+                    <h5 class="mb-2">{{ epreuve.titre }}</h5>
+                    <p class="text-muted">
+                        {{ epreuve.matière.nom }} • {{ epreuve.niveau }} • {{ epreuve.année }}
+                    </p>
+                    <a href="{% url 'aperçu_epreuve' epreuve.id %}" class="btn btn-outline-primary btn-sm">Aperçu</a>
+                    <a href="{% url 'telecharger_epreuve' epreuve.id %}" class="btn btn-primary btn-sm">Télécharger</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">Aucun résultat trouvé.</p>
+    {% endif %}
+</div>
+{% endblock %}
