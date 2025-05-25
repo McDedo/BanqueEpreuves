@@ -21,17 +21,12 @@
       <div class="col-md-6">
         <div class="row">
           {% for matiere in matieres %}
-            <div style="font-size: 2rem;">{{ matiere.icon }}</div>
-              <h5>{{ matiere.nom }}</h5>
-              <p>{{ matiere.epreuve_set.count }} épreuves</p>
-          {% endfor %}
-
             <div class="col-6 mb-4">
               <a href="{% url 'epreuves_par_matiere' matiere.id %}" class="text-decoration-none text-white">
                 <div class="p-3 border rounded bg-white text-center text-dark shadow-sm h-100">
-                  <div style="font-size: 2rem;">{{ icon }}</div>
+                  <div style="font-size: 2rem;">{{ matiere.icon }}</div>
                   <h5 class="fw-bold mt-2">{{ matiere.nom }}</h5>
-                  <p class="mb-0 text-muted">{{ matiere.nb_epreuves }} épreuves</p>
+                  <p class="mb-0 text-muted">{{ matiere.epreuve_set.count }} épreuves</p>
                 </div>
               </a>
             </div>
@@ -42,6 +37,7 @@
     </div>
   </div>
 </section>
+
 
          
 
