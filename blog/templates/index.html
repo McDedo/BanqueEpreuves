@@ -7,21 +7,21 @@
 <!-- Section de présentation -->
 <section class="py-5 text-white" style="background-color: #007BFF;">
   <div class="container">
-    <div class="row align-items-center gx-5">
+    <div class="row align-items-center gx-5 gy-4">
       
-      <!-- Texte à gauche -->
-      <div class="col-md-6">
+      <!-- Texte à gauche (s'empile au-dessus sur mobile) -->
+      <div class="col-md-6 text-center text-md-start">
         <h2 class="fw-bold">Accédez à des milliers d'épreuves académiques</h2>
         <p class="lead">Préparez-vous efficacement pour vos examens grâce à notre vaste banque d'épreuves et de ressources.</p>
-        <a href="#epreuves" class="btn btn-light me-2">➡ Commencer</a>
-        <a href="#apropos" class="btn btn-outline-light text-white border-white">En savoir plus</a>
+        <a href="#epreuves" class="btn btn-light me-2 mb-2">➡ Commencer</a>
+        <a href="#apropos" class="btn btn-outline-light text-white border-white mb-2">En savoir plus</a>
       </div>
 
-      <!-- Matières à droite -->
+      <!-- Matières à droite (sous le texte sur mobile) -->
       <div class="col-md-6">
-        <div class="row">
+        <div class="row gy-3">
           {% for matiere in matieres %}
-            <div class="col-6 mb-4">
+            <div class="col-6 col-md-6 mb-4">
               <a href="{% url 'epreuves_par_matiere' matiere.id %}" class="text-decoration-none text-white">
                 <div class="p-3 border rounded bg-white text-center text-dark shadow-sm h-100">
                   <div style="font-size: 2rem;">{{ matiere.icon }}</div>
@@ -37,6 +37,7 @@
     </div>
   </div>
 </section>
+
 
          
 
