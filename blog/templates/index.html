@@ -9,7 +9,7 @@
   <div class="container">
     <div class="row align-items-center gx-5 gy-4">
       
-      <!-- Texte à gauche (s'empile au-dessus sur mobile) -->
+      <!-- Texte à gauche -->
       <div class="col-md-6 text-center text-md-start">
         <h2 class="fw-bold">Accédez à des milliers d'épreuves académiques</h2>
         <p class="lead">Préparez-vous efficacement pour vos examens grâce à notre vaste banque d'épreuves et de ressources.</p>
@@ -17,16 +17,16 @@
         <a href="#apropos" class="btn btn-outline-light text-white border-white mb-2">En savoir plus</a>
       </div>
 
-      <!-- Matières à droite (sous le texte sur mobile) -->
+      <!-- Matières à droite -->
       <div class="col-md-6">
         <div class="row gy-3">
           {% for matiere in matieres %}
             <div class="col-6 col-md-6 mb-4">
               <a href="{% url 'epreuves_par_matiere' matiere.id %}" class="text-decoration-none text-white">
-                <div class="p-3 border rounded bg-white text-center text-dark shadow-sm h-100">
+                <div class="p-3 border rounded text-center text-white shadow-sm h-100" style="background-color: #0069d9;">
                   <div style="font-size: 2rem;">{{ matiere.icon }}</div>
                   <h5 class="fw-bold mt-2">{{ matiere.nom }}</h5>
-                  <p class="mb-0 text-muted">{{ matiere.epreuve_set.count }} épreuves</p>
+                  <p class="mb-0 text-white-50">{{ matiere.epreuve_set.count }} épreuves</p>
                 </div>
               </a>
             </div>
@@ -37,8 +37,6 @@
     </div>
   </div>
 </section>
-
-
          
 
 <!-- Deuxième section : barre de recherche ajustée -->
