@@ -108,7 +108,6 @@ def register(request):
 
 def home(request):
     matieres = Matière.objects.annotate(nb_epreuves=Count('epreuve'))
-    return render(request, 'index.html', {'matieres': matieres})
 
     for matiere in matieres:
         if matiere.nom == "Mathématiques":
@@ -121,4 +120,5 @@ def home(request):
             matiere.icon = "🔬"
         else:
             matiere.icon = "📘"
-    return render(request, 'home.html', {'matieres': matieres})
+            
+    return render(request, 'index.html', {'matieres': matieres})
