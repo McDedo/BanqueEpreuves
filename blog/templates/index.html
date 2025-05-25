@@ -21,17 +21,10 @@
       <div class="col-md-6">
         <div class="row">
           {% for matiere in matieres %}
-            {% if matiere.nom == "Mathématiques" %}
-              {% set icon = "📐" %}
-            {% elif matiere.nom == "Physique-Chimie" %}
-              {% set icon = "⚛️" %}
-            {% elif matiere.nom == "Français" %}
-              {% set icon = "📚" %}
-            {% elif matiere.nom == "SVT" or matiere.nom == "Sciences de la Vie et de la Terre" %}
-              {% set icon = "🔬" %}
-            {% else %}
-              {% set icon = "📘" %}
-            {% endif %}
+            <div style="font-size: 2rem;">{{ matiere.icon }}</div>
+              <h5>{{ matiere.nom }}</h5>
+              <p>{{ matiere.epreuve_set.count }} épreuves</p>
+          {% endfor %}
 
             <div class="col-6 mb-4">
               <a href="{% url 'epreuves_par_matiere' matiere.id %}" class="text-decoration-none text-white">
