@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Epreuve, Matière
-from django.db.models import Q
+from django.db.models import Q, Count
 import os
 from django.http import FileResponse, Http404
 from .forms import CustomUserCreationForm
@@ -105,3 +105,7 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
+
+def home(request):
+    matieres = Matière.objects.annotate(nb_epreuves=Count('epreuve'))
+    return render(request, 'index.html', {'matieres': matieres})
