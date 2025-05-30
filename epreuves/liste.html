@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Toutes les Épreuves{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4 text-center">Toutes les Épreuves</h2>
+
+  <div class="row">
+    {% for epreuve in epreuves %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ epreuve.titre }}</h5>
+            <p class="text-muted">
+              {{ epreuve.matiere.nom }} | {{ epreuve.annee }} | {{ epreuve.niveau }}
+            </p>
+            <a href="{% url 'aperçu_epreuve' epreuve.id %}" class="btn btn-outline-primary btn-sm me-2">Aperçu</a>
+            <a href="{% url 'telecharger_epreuve' epreuve.id %}" class="btn btn-primary btn-sm">Télécharger</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center">Aucune épreuve disponible pour le moment.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -122,3 +122,16 @@ def home(request):
             matiere.icon = "📘"
             
     return render(request, 'index.html', {'matieres': matieres})
+
+def liste_epreuves(request):
+    epreuves = Epreuve.objects.all()
+    return render(request, 'epreuves/liste.html', {'epreuves': epreuves})
+
+def contact(request):
+    return render(request, 'contact.html')
+
+def fiches_cours(request):
+     return render(request, 'fiches_cours.html')
+
+def epreuves(request):
+    return render(request, 'epreuves.html')
