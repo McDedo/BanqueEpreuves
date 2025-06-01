@@ -4,18 +4,41 @@
 <div class="container mt-5">
     <h2>Résultats de recherche pour : "{{ query }}"</h2>
 
-    {% if resultats %}
+    {% if epreuves %}
+        <h3>Épreuves</h3>
         <div class="row">
-            {% for epreuve in resultats %}
+            {% for epreuve in epreuves %}
                 <div class="col-md-6 mb-3">
                     <div class="card p-3">
                         <h5>{{ epreuve.titre }}</h5>
-                        <p class="text-muted">{{ epreuve.matière.nom }} • {{ epreuve.niveau }}</p>
+                        <p class="text-muted">{{ epreuve.matiere.nom }} • {{ epreuve.niveau }}</p>
+                        <a href="{{ epreuve.fichier.url }}" download class="btn btn-primary btn-sm mt-2">
+                            Télécharger
+                        </a>
                     </div>
                 </div>
             {% endfor %}
         </div>
-    {% else %}
+    {% endif %}
+
+    {% if fiches %}
+        <h3>Fiches de cours</h3>
+        <div class="row">
+            {% for fiche in fiches %}
+                <div class="col-md-6 mb-3">
+                    <div class="card p-3">
+                        <h5>{{ fiche.titre }}</h5>
+                        <p class="text-muted">{{ fiche.matiere.nom }} • {{ fiche.niveau }}</p>
+                        <a href="{{ fiche.fichier.url }}" download class="btn btn-secondary btn-sm mt-2">
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if not epreuves and not fiches %}
         <p class="text-muted">Aucun résultat trouvé.</p>
     {% endif %}
 </div>

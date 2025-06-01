@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Titre matière -->
+  <h2 class="mb-4 text-primary">Épreuves de {{ matiere.nom }}</h2>
+
+  {% if epreuves %}
+  <div class="row">
+    {% for epreuve in epreuves %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ epreuve.titre }}</h5>
+          <p class="card-text">Niveau : {{ epreuve.niveau }}</p>
+
+          <div class="mt-auto d-flex justify-content-between">
+            <a href="{{ epreuve.fichier.url }}" target="_blank" class="btn btn-sm btn-outline-secondary">Aperçu</a>
+            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ epreuve.id }}">
+              Télécharger
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal prix -->
+    <div class="modal fade" id="modal{{ epreuve.id }}" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Téléchargement de "{{ epreuve.titre }}"</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+          <div class="modal-body">
+            <p>Cette épreuve coûte <strong>{{ epreuve.prix }} €</strong>.</p>
+            <p>Souhaitez-vous procéder au téléchargement ?</p>
+          </div>
+          <div class="modal-footer">
+            <a href="{{ epreuve.fichier.url }}" download class="btn btn-success">Payer et Télécharger</a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="alert alert-info">Aucune épreuve disponible pour cette matière pour le moment.</div>
+  {% endif %}
+
+  <!-- Section Fiches de Cours -->
+  <h2 class="mb-4 text-primary mt-5">Fiches de cours de {{ matiere.nom }}</h2>
+
+  {% if fiches %}
+  <div class="row">
+    {% for fiche in fiches %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ fiche.titre }}</h5>
+          <p class="card-text">Niveau : {{ fiche.niveau }}</p>
+          {% if fiche.description %}
+          <p class="card-text">{{ fiche.description|truncatewords:20 }}</p>
+          {% endif %}
+
+          <div class="mt-auto d-flex justify-content-end">
+            <a href="{{ fiche.fichier.url }}" download class="btn btn-sm btn-primary">
+              Télécharger
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="alert alert-info">Aucune fiche de cours disponible pour cette matière pour le moment.</div>
+  {% endif %}
+
+  <!-- Bouton retour -->
+  <a href="{% url 'home' %}" class="btn btn-outline-primary mt-4">⬅ Retour à l'accueil</a>
+
+</div>
+{% endblock %}

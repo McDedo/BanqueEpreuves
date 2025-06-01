@@ -14,7 +14,7 @@
         <h2 class="fw-bold">Accédez à des milliers d'épreuves académiques</h2>
         <p class="lead">Préparez-vous efficacement pour vos examens grâce à notre vaste banque d'épreuves et de ressources.</p>
         <a href="#epreuves" class="btn btn-light me-2 mb-2">➡ Commencer</a>
-        <a href="#apropos" class="btn btn-outline-light text-white border-white mb-2">En savoir plus</a>
+        <a href="{% url 'apropos' %}" class="btn btn-outline-light text-white border-white mb-2">En savoir plus</a>
       </div>
 
       <!-- Matières à droite -->
@@ -26,7 +26,9 @@
                 <div class="p-3 border rounded text-center text-white shadow-sm h-100" style="background-color: #0069d9;">
                   <div style="font-size: 2rem;">{{ matiere.icon }}</div>
                   <h5 class="fw-bold mt-2">{{ matiere.nom }}</h5>
-                  <p class="mb-0 text-white-50">{{ matiere.epreuve_set.count }} épreuves</p>
+                  <p class="mb-0 text-white-50">
+                    {{ matiere.epreuve_set.count }} épreuves &amp; {{ matiere.fiches.count }} fiches de cours
+                  </p>
                 </div>
               </a>
             </div>
@@ -47,10 +49,6 @@
         <form class="d-flex align-items-center flex-wrap gap-2" method="GET" action="{% url 'rechercher' %}">
           <input type="text" name="q" class="form-control recherche-input" 
                  placeholder="Rechercher par matière, niveau ou année ..." />
-
-          <button type="button" class="btn btn-outline-secondary filtre-btn">
-            <i class="bi bi-funnel"></i> Filtres
-          </button>
 
           <button type="submit" class="btn btn-primary">
             🔍 Rechercher

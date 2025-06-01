@@ -20,9 +20,11 @@ def home(request):
 def epreuves_par_matiere(request, matiere_id):
     matiere = Matière.objects.get(id=matiere_id)
     epreuves = Epreuve.objects.filter(matiere=matiere)
+    fiches = FicheCours.objects.filter(matiere=matiere)
     context = {
         'epreuves': epreuves,
-        'matiere': matiere
+        'matiere': matiere,
+        'fiches': fiches,
     }
     return render(request, 'epreuves_par_matiere.html', context)
 
@@ -50,20 +52,27 @@ def home(request):
 
 def rechercher(request):
     query = request.GET.get('q', '')
-    resultats = []
+    epreuves = Epreuve.objects.filter(
+        Q(titre__icontains=query) |
+        Q(matiere__nom__icontains=query) |
+        Q(niveau__icontains=query)  |
+        Q(annee__icontains=query) 
+    ).distinct()
 
-    if query:
-        resultats = Epreuve.objects.filter(
-            Q(titre__icontains=query) |
-            Q(matière__nom__icontains=query) |
-            Q(niveau__icontains=query)
-        ).distinct()
+    fiches = FicheCours.objects.filter(
+        Q(titre__icontains=query) |
+        Q(matiere__nom__icontains=query) |
+        Q(niveau__icontains=query) |
+        Q(annee__icontains=query)
+    ).distinct()
 
-        context = {
-            'query': query,
-            'resultats': resultats
-        }
-        return render(request, 'rechercher.html', context)
+    context = {
+        'query': query,
+        'epreuves': epreuves,
+        'fiches': fiches
+    }
+
+    return render(request, 'rechercher.html', context)
 
 def home(request):
     epreuves_populaires = Epreuve.objects.order_by('-telechargements')[:4]
@@ -201,3 +210,6 @@ def epreuves(request):
 def apercu_epreuve(request, epreuve_id):
     epreuve = get_object_or_404(Epreuve, pk=epreuve_id)
     return render(request, 'epreuves/apercu.html', {'epreuve': epreuve})
+
+def apropos(request):
+    return render(request, 'apropos.html')
