@@ -25,9 +25,7 @@ SECRET_KEY = 'django-insecure-_sb3jfls#lcnp1hx2)c9ue^n3g9rlr+^$94+ks_f_9j(!!08g4
 SECRET_KEY = os.environ.get("SECRET_KEY", "clé-par-défaut-invalide")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
 DEBUG = True
-
 
 ALLOWED_HOSTS = ['banqueepreuves.onrender.com', '127.0.0.1', 'localhost']
 
@@ -88,7 +86,7 @@ DATABASES = {
             default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
             conn_max_age=600,
             ssl_require=True
-        )
+            )
     }
 }
 
@@ -137,4 +135,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
 
