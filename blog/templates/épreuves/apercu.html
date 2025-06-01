@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Aperçu - {{ epreuve.titre }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-bold">{{ epreuve.titre }}</h2>
+  <p class="text-muted">{{ epreuve.matiere.nom }} - {{ epreuve.annee }} - {{ epreuve.niveau }}</p>
+  <iframe src="{{ epreuve.fichier.url }}" width="100%" height="600px"></iframe>
+  <a href="{% url 'telecharger_epreuve' epreuve.id %}" class="btn btn-primary mt-3">Télécharger</a>
+</div>
+{% endblock %}

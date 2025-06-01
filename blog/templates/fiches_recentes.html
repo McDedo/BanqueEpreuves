@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Fiches de cours récentes</h2>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    {% for fiche in fiches %}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ fiche.image_url }}" class="card-img-top" alt="Illustration" style="height: 160px; object-fit: cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ fiche.titre }}</h5>
+            <p>{{ fiche.matiere.nom }} · {{ fiche.niveau }}</p>
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'aperçu_fiche' fiche.id %}" class="btn btn-outline-secondary">Aperçu</a>
+              <a href="{% url 'telecharger_fiche' fiche.id %}" class="btn btn-primary">Télécharger</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>Aucune fiche trouvée.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

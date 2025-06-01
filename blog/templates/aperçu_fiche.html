@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container py-5">
+    <h1>{{ fiche.titre }}</h1>
+    <p><strong>Matière :</strong> {{ fiche.matiere.nom }}</p>
+    <p><strong>Niveau :</strong> {{ fiche.niveau }}</p>
+    <hr>
+    <div>
+      {{ fiche.contenu|linebreaks }}
+    </div>
+    <a href="{% url 'telecharger_fiche' fiche.id %}" class="btn btn-primary mt-3">Télécharger</a>
+  </div>
+{% endblock %}
