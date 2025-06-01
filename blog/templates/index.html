@@ -223,9 +223,9 @@
       <div class="col-md-3">
         <h5 class="fw-bold mb-3">Ressources</h5>
         <ul class="list-unstyled">
-          <li><a href="#" class="text-light text-decoration-none d-block">Épreuves</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Matières</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Fiches de cours</a></li>
+          <li><a href="{% url 'liste_epreuves' %}" class="text-light text-decoration-none d-block">Épreuves</a></li>
+          <li><a href="{% url 'liste_matieres' %}" class="text-light text-decoration-none d-block">Matières</a></li>
+          <li><a href="{% url 'fiches_cours' %}" class="text-light text-decoration-none d-block">Fiches de cours</a></li>
         </ul>
       </div>
 
@@ -233,10 +233,10 @@
       <div class="col-md-3">
         <h5 class="fw-bold mb-3">Support</h5>
         <ul class="list-unstyled">
-          <li><a href="#" class="text-light text-decoration-none d-block">FAQ</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Contact</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Aide</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Signaler un problème</a></li>
+          <li><a href="{% url 'faq' %}" class="text-light text-decoration-none d-block">FAQ</a></li>
+          <li><a href="{% url 'contact' %}" class="text-light text-decoration-none d-block">Contact</a></li>
+          <li><a href="{% url 'aide' %}" class="text-light text-decoration-none d-block">Aide</a></li>
+          <li><a href="{% url 'signaler_probleme' %}" class="text-light text-decoration-none d-block">Signaler un problème</a></li>
         </ul>
       </div>
 
@@ -244,10 +244,10 @@
       <div class="col-md-3">
         <h5 class="fw-bold mb-3">Légal</h5>
         <ul class="list-unstyled">
-          <li><a href="#" class="text-light text-decoration-none d-block">Conditions d'utilisation</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Politique de confidentialité</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Mentions légales</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Cookies</a></li>
+          <li><a href="{% url 'conditions_utilisation' %}" class="text-light text-decoration-none d-block">Conditions d'utilisation</a></li>
+          <li><a href="{% url 'politique_confidentialite' %}" class="text-light text-decoration-none d-block">Politique de confidentialité</a></li>
+          <li><a href="{% url 'mentions_legales' %}" class="text-light text-decoration-none d-block">Mentions légales</a></li>
+          <li><a href="{% url 'cookies' %}" class="text-light text-decoration-none d-block">Cookies</a></li>
         </ul>
       </div>
 

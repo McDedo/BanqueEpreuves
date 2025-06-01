@@ -7,6 +7,8 @@ from .forms import CustomUserCreationForm
 from django.core.paginator import Paginator
 from itertools import chain
 from operator import attrgetter
+from django.core.mail import send_mail
+from django.contrib import messages
 
 
 # Create your views here.
@@ -172,6 +174,21 @@ def liste_epreuves(request):
     return render(request, 'épreuves/liste.html', {'epreuves': epreuves})
 
 def contact(request):
+    if request.method == "POST":
+        nom = request.POST.get('nom')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        send_mail(
+            f"Message de contact de {nom}",
+            message,
+            email,
+            ['banqueepreuves@gmail.com'],
+            fail_silently=False,
+        )
+        messages.success(request, "Merci pour votre message, nous vous répondrons bientôt.")
+        return redirect('contact')
+
     return render(request, 'contact.html')
 
 def fiches_cours(request):
@@ -262,3 +279,32 @@ def epreuves_recentes(request):
 def fiches_recentes(request):
     fiches = FicheCours.objects.order_by('-created_at')[:10]
     return render(request, 'fiches_recentes.html', {'fiches': fiches})
+
+def faq(request):
+    return render(request, 'faq.html')
+
+def aide(request):
+    return render(request, 'aide.html')
+
+def signaler_probleme(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        email = request.POST.get('email')
+        description = request.POST.get('description')
+
+        messages.success(request, "Merci, votre problème a bien été signalé. Nous allons le traiter rapidement.")
+        return redirect('home')  # Rediriger vers la page d'accueil après le signalement
+
+    return render(request, 'signaler_probleme.html')
+
+def conditions_utilisation(request):
+    return render(request, 'conditions_utilisation.html')
+
+def politique_confidentialite(request):
+    return render(request, 'politique_confidentialite.html')
+
+def mentions_legales(request):
+    return render(request, 'mentions_legales.html')
+
+def cookies(request):
+    return render(request, 'cookies.html')

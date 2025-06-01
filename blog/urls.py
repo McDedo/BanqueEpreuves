@@ -26,4 +26,11 @@ urlpatterns=[
     path('populaires/', views.contenus_populaires, name='populaires'),
     path('epreuves-recentes/', views.epreuves_recentes, name='epreuves_recentes'),
     path('fiches-recentes/', views.fiches_recentes, name='fiches_recentes'),
+    path('faq/', views.faq, name='faq'),
+    path('aide/', views.aide, name='aide'),
+    path('signaler-probleme/', views.signaler_probleme, name='signaler_probleme'),
+    path('conditions/', views.conditions_utilisation, name='conditions_utilisation'),
+    path('politique/', views.politique_confidentialite, name='politique_confidentialite'),
+    path('mentions/', views.mentions_legales, name='mentions_legales'),
+    path('cookies/', views.cookies, name='cookies'),
 ]
