@@ -19,4 +19,5 @@ urlpatterns=[
     path('accounts/', include('django.contrib.auth.urls')),
     path('fiches-cours/', views.fiches_cours, name='fiches_cours'),
     path('epreuves/', views.epreuves, name='epreuves'),
+    path('epreuves/<int:epreuve_id>/apercu/', views.apercu_epreuve, name='apercu_epreuve'),
 ]

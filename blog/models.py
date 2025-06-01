@@ -18,6 +18,7 @@ class Epreuve(models.Model):
         ('4e', 'Quatrième'),
         ('5e', 'Cinquième'),
         ('6e', 'Sixième'),
+        ('CI', 'Cours d\'Initiation'),
         ('CP', 'Cours Préparatoire'),
         ('CE1', 'Cours Élémentaire 1'),
         ('CE2', 'Cours Élémentaire 2'),
@@ -45,3 +46,29 @@ class Epreuve(models.Model):
 
     def __str__(self):
         return self.titre
+    
+class FicheCours(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    fichier = models.FileField(upload_to='fiches/')
+    matiere = models.ForeignKey(Matière, on_delete=models.CASCADE, related_name='fiches')
+    niveau = models.CharField(max_length=50, choices=[
+            ('Tle', 'Terminale'),
+            ('1ère', 'Première'),
+            ('2nde', 'Seconde'),
+            ('3e', 'Troisième'),
+            ('4e', 'Quatrième'),
+            ('5e', 'Cinquième'),
+            ('6e', 'Sixième'),
+            ('CI', 'Cours d\'Initiation'),
+            ('CP', 'Cours Préparatoire'),
+            ('CE1', 'Cours Élémentaire 1'),
+            ('CE2', 'Cours Élémentaire 2'),
+            ('CM1', 'Cours Moyen 1'),
+            ('CM2', 'Cours Moyen 2'),
+        ], default='Tle')
+    annee = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.titre} ({self.niveau} - {self.annee})"

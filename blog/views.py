@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Epreuve, Matière
+from .models import Epreuve, Matière, FicheCours
 from django.db.models import Q, Count
 import os
 from django.http import FileResponse, Http404
 from .forms import CustomUserCreationForm
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -70,7 +71,39 @@ def home(request):
 
 def liste_epreuves(request):
     epreuves = Epreuve.objects.all()
-    return render(request, 'epreuves.html', {'epreuves': epreuves})
+    matieres = Matière.objects.all()
+    niveaux = Epreuve.objects.values_list('niveau', flat=True).distinct()
+
+    query = request.GET.get('q')
+    niveau = request.GET.get('niveau')
+    matiere_id = request.GET.get('matiere')
+
+    if query:
+        epreuves = epreuves.filter(
+            Q(titre__icontains=query) |
+            Q(niveau__icontains=query) |
+            Q(annee__icontains=query) |
+            Q(matière__nom__icontains=query) 
+        )
+
+    if niveau:
+        epreuves = epreuves.filter(niveau=niveau)
+
+    if matiere_id:
+        epreuves = epreuves.filter(matière__id=matiere_id)
+
+    paginator = Paginator(epreuves, 10)  # 10 epreuves par page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'epreuves': page_obj,
+        'matieres': matieres,
+        'niveaux': niveaux,
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'epreuves/liste.html', context)
 
 def aperçu_epreuve(request, epreuve_id):
     epreuve = get_object_or_404(Epreuve, pk=epreuve_id)
@@ -131,7 +164,40 @@ def contact(request):
     return render(request, 'contact.html')
 
 def fiches_cours(request):
-     return render(request, 'fiches_cours.html')
+    fiches = FicheCours.objects.all().order_by('created_at')
+    matieres = Matière.objects.all()
+    niveaux = FicheCours.objects.values_list('niveau', flat=True).distinct()
+
+    query = request.GET.get('q')
+    niveau = request.GET.get('niveau')
+    matiere_id = request.GET.get('matiere')
+    
+    if query:
+        fiches = fiches.filter(
+             titre__icontains=query
+        )| fiches.filter(
+            annee__icontains=query
+        ) | fiches.filter(
+            niveau__icontains=query
+        ) | fiches.filter(matiere__nom__icontains=query
+        )
+
+    if niveau:
+        fiches = fiches.filter(niveau=niveau)
+
+    if matiere_id:
+        fiches = fiches.filter(matiere__id=matiere_id)
+
+    context = {
+        'fiches': fiches,
+        'matieres': matieres,
+        'niveaux': niveaux,
+    }
+    return render(request, 'fiches_cours.html', context)  
 
 def epreuves(request):
     return render(request, 'epreuves.html')
+
+def apercu_epreuve(request, epreuve_id):
+    epreuve = get_object_or_404(Epreuve, pk=epreuve_id)
+    return render(request, 'epreuves/apercu.html', {'epreuve': epreuve})
