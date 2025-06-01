@@ -69,6 +69,7 @@ class FicheCours(models.Model):
         ], default='Tle')
     annee = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+    telechargements = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.titre} ({self.niveau} - {self.annee})"

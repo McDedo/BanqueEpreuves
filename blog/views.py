@@ -5,6 +5,8 @@ import os
 from django.http import FileResponse, Http404
 from .forms import CustomUserCreationForm
 from django.core.paginator import Paginator
+from itertools import chain
+from operator import attrgetter
 
 
 # Create your views here.
@@ -112,7 +114,7 @@ def liste_epreuves(request):
         'page_obj': page_obj,
     }
 
-    return render(request, 'epreuves/liste.html', context)
+    return render(request, 'épreuves/liste.html', context)
 
 def aperçu_epreuve(request, epreuve_id):
     epreuve = get_object_or_404(Epreuve, pk=epreuve_id)
@@ -167,7 +169,7 @@ def home(request):
 
 def liste_epreuves(request):
     epreuves = Epreuve.objects.all()
-    return render(request, 'epreuves/liste.html', {'epreuves': epreuves})
+    return render(request, 'épreuves/liste.html', {'epreuves': epreuves})
 
 def contact(request):
     return render(request, 'contact.html')
@@ -209,7 +211,54 @@ def epreuves(request):
 
 def apercu_epreuve(request, epreuve_id):
     epreuve = get_object_or_404(Epreuve, pk=epreuve_id)
-    return render(request, 'epreuves/apercu.html', {'epreuve': epreuve})
+    return render(request, 'épreuves/apercu.html', {'epreuve': epreuve})
 
 def apropos(request):
     return render(request, 'apropos.html')
+
+def accueil(request):
+    epreuves_populaires = Epreuve.objects.order_by('-telechargements')[:4]
+    fiches_populaires = FicheCours.objects.order_by('-telechargements')[:4]
+    return render(request, 'index.html', {
+        'epreuves_populaires': epreuves_populaires,
+        'fiches_populaires': fiches_populaires,
+    })
+
+def apercu_fiche(request, fiche_id):
+    fiche = get_object_or_404(FicheCours, pk=fiche_id)
+    return render(request, 'apercu_fiche.html', {'fiche': fiche})
+
+def telecharger_fiche(request, fiche_id):
+    fiche = get_object_or_404(FicheCours, id=fiche_id)
+    fiche.telechargements += 1
+    fiche.save()
+    return FileResponse(fiche.fichier.open(), as_attachment=True, filename=fiche.fichier.name.split('/')[-1])
+
+def contenus_populaires(request):
+    epreuves = Epreuve.objects.all()
+    fiches = FicheCours.objects.all()
+
+    
+    for epreuve in epreuves:
+        epreuve.type_contenu = 'epreuve'
+    for fiche in fiches:
+        fiche.type_contenu = 'fiche'
+    contenus = sorted(
+        chain(epreuves, fiches),
+        key=attrgetter('telechargements'),
+        reverse=True
+    )[:8]  # Limiter aux 8 plus populaires
+
+
+    fiches_populaires = FicheCours.objects.order_by('-telechargements')[:8]
+    return render(request, 'index.html', {
+        'contenus_populaires': contenus,
+    })
+
+def epreuves_recentes(request):
+    epreuves = Epreuve.objects.order_by('-created_at')[:10]
+    return render(request, 'epreuves_recentes.html', {'epreuves': epreuves})
+
+def fiches_recentes(request):
+    fiches = FicheCours.objects.order_by('-created_at')[:10]
+    return render(request, 'fiches_recentes.html', {'fiches': fiches})

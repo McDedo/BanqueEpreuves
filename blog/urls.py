@@ -19,6 +19,11 @@ urlpatterns=[
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('fiches-cours/', views.fiches_cours, name='fiches_cours'),
-    path('epreuves/', views.epreuves, name='epreuves'),
+    path('epreuves/', views.liste_epreuves, name='épreuves'),
     path('epreuves/<int:epreuve_id>/apercu/', views.apercu_epreuve, name='apercu_epreuve'),
+    path('fiche/<int:fiche_id>/apercu/', views.apercu_fiche, name='aperçu_fiche'),
+    path('fiche/<int:fiche_id>/telecharger/', views.telecharger_fiche, name='telecharger_fiche'),
+    path('populaires/', views.contenus_populaires, name='populaires'),
+    path('epreuves-recentes/', views.epreuves_recentes, name='epreuves_recentes'),
+    path('fiches-recentes/', views.fiches_recentes, name='fiches_recentes'),
 ]

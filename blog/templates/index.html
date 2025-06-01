@@ -59,30 +59,38 @@
   </div>
 </section>
 
-<!-- Section : Épreuves populaires -->
+<!-- Section : Contenus populaires -->
 <section class="py-5 bg-white border-top">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 class="fw-bold">Épreuves populaires</h3>
-      <a href="{% url 'epreuves' %}" class="btn btn-outline-secondary voir-tout-btn">
+      <h3 class="fw-bold">Contenus populaires</h3>
+      <a href="{% url 'populaires' %}" class="btn btn-outline-secondary voir-tout-btn">
         Voir tout ➡
       </a>
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-      {% for epreuve in epreuves_populaires %}
+      {% for contenu in contenus_populaires %}
       <div class="col">
         <div class="card h-100 shadow-sm border-0">
-          <img src="{{ epreuve.image_url }}" class="card-img-top" alt="Illustration matière" style="height: 160px; object-fit: cover;">
+          <img src="{{ contenu.image_url }}" class="card-img-top" alt="Illustration contenu" style="height: 160px; object-fit: cover;">
           <div class="card-body">
-            <h5 class="card-title fw-bold">{{ epreuve.titre }}</h5>
-            <p class="text-muted mb-1">{{ epreuve.matiere.nom }} - {{ epreuve.annee }}</p>
+            <h5 class="card-title fw-bold">{{ contenu.titre }}</h5>
+            <p class="text-muted mb-1">
+              {% if contenu.matiere %}{{ contenu.matiere.nom }}{% endif %}
+              {% if contenu.annee %} - {{ contenu.annee }}{% endif %}
+            </p>
             <p class="mb-2">
-              <strong>{{ epreuve.niveau }}</strong> · {{ epreuve.telechargements }} téléchargements
+              <strong>{{ contenu.niveau }}</strong> · {{ contenu.telechargements }} téléchargements
             </p>
             <div class="d-flex justify-content-between">
-              <a href="{% url 'aperçu_epreuve' epreuve.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
-              <a href="{% url 'telecharger_epreuve' epreuve.id %}" class="btn btn-primary">Télécharger</a>
+              {% if contenu.type_contenu == "epreuve" %}
+                <a href="{% url 'aperçu_epreuve' contenu.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
+                <a href="{% url 'telecharger_epreuve' contenu.id %}" class="btn btn-primary">Télécharger</a>
+              {% else %}
+                <a href="{% url 'aperçu_fiche' contenu.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
+                <a href="{% url 'telecharger_fiche' contenu.id %}" class="btn btn-primary">Télécharger</a>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -91,6 +99,7 @@
     </div>
   </div>
 </section>
+
 
 <!-- Section :  -->
 <section style="background-color: white; padding: 4rem 0; text-align: center;">
@@ -104,7 +113,8 @@
   </div>
 </section>
 
-<!-- Section :  -->
+
+<!-- Section : -->
 <section style="background-color: white; padding: 4rem 0;">
   <div style="display: flex; justify-content: space-around; gap: 1.5rem; flex-wrap: wrap;" class="container mx-auto px-4">
     
@@ -115,20 +125,20 @@
       <p style="color: #6B7280; margin: 1rem 0;">
         Accédez aux dernières épreuves des examens et concours nationaux.
       </p>
-      <a href="#" style="color: #2563eb; font-weight: 500; text-decoration: none;">
+      <a href="{% url 'epreuves_recentes' %}" style="color: #2563eb; font-weight: 500; text-decoration: none;">
         Voir les nouveautés ➡
       </a>
     </div>
 
-    <!-- Bloc 2 : Téléchargements illimités -->
+    <!-- Bloc 2 : Fiches de cours récentes -->
     <div style="background-color: #f3f4f6; padding: 2rem; border-radius: 0.75rem; flex: 1; min-width: 280px; text-align: center;">
-      <div style="font-size: 2rem; margin-bottom: 1rem;">⬇️</div>
-      <h3 style="font-weight: bold; font-size: 1.25rem;">Téléchargements illimités</h3>
+      <div style="font-size: 2rem; margin-bottom: 1rem;">📚</div>
+      <h3 style="font-weight: bold; font-size: 1.25rem;">Fiches de cours récentes</h3>
       <p style="color: #6B7280; margin: 1rem 0;">
-        Téléchargez autant d'épreuves que nécessaire pour votre préparation.
+        Découvrez les dernières fiches de cours pour réviser efficacement vos matières.
       </p>
-      <a href="#" style="color: #2563eb; font-weight: 500; text-decoration: none;">
-        Découvrir le catalogue ➡
+      <a href="{% url 'fiches_recentes' %}" style="color: #2563eb; font-weight: 500; text-decoration: none;">
+        Explorer les fiches ➡
       </a>
     </div>
 
@@ -146,6 +156,7 @@
 
   </div>
 </section>
+
 
 <!-- Section : Parcourir par matière -->
 <section style="background-color: #f3f4f6; padding: 4rem 0;">
@@ -214,7 +225,7 @@
         <ul class="list-unstyled">
           <li><a href="#" class="text-light text-decoration-none d-block">Épreuves</a></li>
           <li><a href="#" class="text-light text-decoration-none d-block">Matières</a></li>
-          <li><a href="#" class="text-light text-decoration-none d-block">Corrigés</a></li>
+          <li><a href="#" class="text-light text-decoration-none d-block">Fiches de cours</a></li>
         </ul>
       </div>
 
