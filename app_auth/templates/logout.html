@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Déconnexion - Banque d'Épreuves{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h2 class="mb-4">Vous êtes maintenant déconnecté.</h2>
+    <a href="{% url 'login' %}" class="btn btn-primary">Se reconnecter</a>
+</div>
+{% endblock %}
