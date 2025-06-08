@@ -10,15 +10,12 @@ def add_matieres(apps, schema_editor):
         "Histoire-Géographie",
         "Philosophie",
         "EST",
-        "Ar",
         "EPS",
         "Informatique",
         "Économie",
-        "Technologie",
-        "Langues",
-        "Arts Appliqués",
-        "Mathématiques et Sciences de l'Ingénieur",
-        "Sciences de la Vie et de la Terre",
+        "Anglais",
+        "Espagnol",
+        "Allemand"
     ]
     for nom in matieres:
         Matiere.objects.get_or_create(nom=nom)
