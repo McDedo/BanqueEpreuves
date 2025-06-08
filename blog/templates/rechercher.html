@@ -2,9 +2,22 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Résultats de recherche pour : "{{ query }}"</h2>
+    <h2>
+        Résultats de recherche 
+        {% if query %} pour : "<strong>{{ query }}</strong>"{% endif %}
+        {% if categorie %} dans la catégorie : <strong>{{ categorie }}</strong>{% endif %}
+    </h2>
 
-    {% if epreuves %}
+    {% if query or categorie %}
+        <div class="alert alert-info">
+            Critères appliqués :
+            {% if query %}<strong>Recherche</strong> : "{{ query }}"{% endif %}
+            {% if query and categorie %} • {% endif %}
+            {% if categorie %}<strong>Catégorie</strong> : {{ categorie }}{% endif %}
+        </div>
+    {% endif %}
+
+    {% if epreuves.exists %}
         <h3>Épreuves</h3>
         <div class="row">
             {% for epreuve in epreuves %}
@@ -21,7 +34,7 @@
         </div>
     {% endif %}
 
-    {% if fiches %}
+    {% if fiches.exists %}
         <h3>Fiches de cours</h3>
         <div class="row">
             {% for fiche in fiches %}
@@ -38,7 +51,7 @@
         </div>
     {% endif %}
 
-    {% if not epreuves and not fiches %}
+    {% if not epreuves.exists and not fiches.exists %}
         <p class="text-muted">Aucun résultat trouvé.</p>
     {% endif %}
 </div>

@@ -51,7 +51,8 @@ class FicheCours(models.Model):
     titre = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     fichier = models.FileField(upload_to='fiches/')
-    matiere = models.ForeignKey(Matière, on_delete=models.CASCADE, related_name='fiches')
+    matiere = models.ForeignKey(Matière, on_delete=models.CASCADE)
+    prix = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     niveau = models.CharField(max_length=50, choices=[
             ('Tle', 'Terminale'),
             ('1ère', 'Première'),

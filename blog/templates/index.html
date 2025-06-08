@@ -19,22 +19,22 @@
 
       <!-- Matières à droite -->
       <div class="col-md-6">
-        <div class="row gy-3">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3 justify-content-center">
           {% for matiere in matieres %}
-            <div class="col-6 col-md-6 mb-4">
-              <a href="{% url 'epreuves_par_matiere' matiere.id %}" class="text-decoration-none text-white">
-                <div class="p-3 border rounded text-center text-white shadow-sm h-100" style="background-color: #0069d9;">
-                  <div style="font-size: 2rem;">{{ matiere.icon }}</div>
-                  <h5 class="fw-bold mt-2">{{ matiere.nom }}</h5>
-                  <p class="mb-0 text-white-50">
-                    {{ matiere.epreuve_set.count }} épreuves &amp; {{ matiere.fiches.count }} fiches de cours
-                  </p>
-                </div>
-              </a>
-            </div>
+          <div class="col d-flex justify-content-center">
+            <a href="{% url 'epreuves_par_matiere' matiere.id %}" class="text-decoration-none text-white w-100">
+              <div class="p-3 border rounded text-center text-white shadow-sm h-100 matiere-card" style="background-color: #0069d9; max-width: 200px; margin: 0 auto;">
+                <div style="font-size: 2rem;">{{ matiere.icon }}</div>
+                <h5 class="fw-bold mt-2">{{ matiere.nom }}</h5>
+                <p class="mb-0 text-white-50">
+                  {{ matiere.epreuve_set.count }} épreuves &amp; {{ matiere.fichecours_set.count }} fiches de cours
+                </p>
+              </div>
+            </a>
+          </div>
           {% endfor %}
         </div>
-      </div>
+          
 
     </div>
   </div>

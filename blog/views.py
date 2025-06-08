@@ -56,22 +56,34 @@ def home(request):
 
 def rechercher(request):
     query = request.GET.get('q', '')
-    epreuves = Epreuve.objects.filter(
-        Q(titre__icontains=query) |
-        Q(matiere__nom__icontains=query) |
-        Q(niveau__icontains=query)  |
-        Q(annee__icontains=query) 
-    ).distinct()
+    categorie = request.GET.get('categorie', '')
 
-    fiches = FicheCours.objects.filter(
-        Q(titre__icontains=query) |
-        Q(matiere__nom__icontains=query) |
-        Q(niveau__icontains=query) |
-        Q(annee__icontains=query)
-    ).distinct()
+    epreuves = Epreuve.objects.all()
+    fiches = FicheCours.objects.all()
+    
+    if query:
+        epreuves = epreuves.filter(
+            Q(titre__icontains=query) |
+            Q(matiere__nom__icontains=query) |
+            Q(niveau__icontains=query) |
+            Q(annee__icontains=query)
+        ).distinct()
+        
+        fiches = fiches.filter(
+            Q(titre__icontains=query) |
+            Q(matiere__nom__icontains=query) |
+            Q(niveau__icontains=query) |
+            Q(annee__icontains=query)
+        ).distinct()
+    
+    if categorie:
+        epreuves = epreuves.filter(niveau__iexact=categorie)
+        fiches = fiches.filter(niveau__iexact=categorie)
+            
 
     context = {
         'query': query,
+        'categorie': categorie,
         'epreuves': epreuves,
         'fiches': fiches
     }
@@ -133,7 +145,13 @@ def telecharger_epreuve(request, epreuve_id):
 def epreuves_par_matiere(request, matiere_id):
     matiere = get_object_or_404(Matière, id=matiere_id)
     epreuves = Epreuve.objects.filter(matiere=matiere)
-    return render(request, "epreuves_par_matiere.html", {"matiere": matiere, "epreuves": epreuves})
+    fiches = FicheCours.objects.filter(matiere=matiere)
+    context = {
+        'epreuves': epreuves,
+        'matiere': matiere,
+        'fiches': fiches,
+    }
+    return render(request, "epreuves_par_matiere.html", context)
 
 def liste_matieres(request):
     matieres = Matière.objects.all()
@@ -153,7 +171,10 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def home(request):
-    matieres = Matière.objects.annotate(nb_epreuves=Count('epreuve'))
+    matieres = Matière.objects.annotate(
+        nb_epreuves=Count('epreuve'),
+        nb_fiches=Count('fichecours')
+    )
 
     for matiere in matieres:
         if matiere.nom == "Mathématiques":
