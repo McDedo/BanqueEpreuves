@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_sb3jfls#lcnp1hx2)c9ue^n3g9rlr+^$94+ks_f_9j(!!08g4
 SECRET_KEY = os.environ.get("SECRET_KEY", "clé-par-défaut-invalide")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['banqueepreuves.onrender.com', '127.0.0.1', 'localhost']
 
