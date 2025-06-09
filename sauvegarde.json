@@ -1,0 +1,304 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-05-23T04:12:47.043Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "Mathématiques",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-05-23T04:24:28.487Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Physiques",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-05-23T15:00:42.104Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Mathématiques",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-05-23T15:01:23.705Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Physique-Chimie",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-05-23T15:02:01.807Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Histoire-Géo",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-05-23T15:03:07.188Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Matières",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-05-23T17:06:40.973Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "SVT",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-05-23T17:07:15.375Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "SVT",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$EoX8Lusqj3Cea6jyp0NATy$ZgPzs2/qU+UJ0uH6nWbGDXwYDc3chvUSFRhSlCZSnxY=",
+    "last_login": "2025-05-23T02:43:41.443Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-05-23T02:42:38.257Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "truubyexfato3sd9z03vjrwqgvwktdeb",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQRP-FsyEsLRY8evcbyC4sUjWQlPZk_Hdp0oPeJvPezFt43Nbst8aLn6O4CBCn344wPLnsID6w3KsMtazLTHJX5EGbvNXIr-vh_h1kbLmvCQypxIZBaQpgHVBi5UajpyEkINtj0gmQp2EEAESLZ0Q3dDtGMuLzBecHOEM:1uIINp:itF-t32ESI2-NK8fED0Ie9W5xIk5WMxJXObsoIzbX2Y",
+    "expire_date": "2025-06-06T02:43:41.571Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 1,
+  "fields": {
+    "nom": "Mathématiques",
+    "created_at": "2025-05-23T15:00:41.991Z",
+    "updated_at": "2025-05-23T15:00:41.991Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 2,
+  "fields": {
+    "nom": "Physique-Chimie",
+    "created_at": "2025-05-23T15:01:23.696Z",
+    "updated_at": "2025-05-23T15:01:23.696Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 3,
+  "fields": {
+    "nom": "Histoire-Géo",
+    "created_at": "2025-05-23T15:02:01.799Z",
+    "updated_at": "2025-05-23T15:02:01.799Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 4,
+  "fields": {
+    "nom": "SVT",
+    "created_at": "2025-05-23T17:06:40.889Z",
+    "updated_at": "2025-05-23T17:06:40.889Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 5,
+  "fields": {
+    "nom": "Français",
+    "created_at": "2025-06-08T04:58:58.650Z",
+    "updated_at": "2025-06-08T04:58:58.650Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 6,
+  "fields": {
+    "nom": "Histoire-Géographie",
+    "created_at": "2025-06-08T05:20:20.969Z",
+    "updated_at": "2025-06-08T05:20:20.969Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 7,
+  "fields": {
+    "nom": "Philosophie",
+    "created_at": "2025-06-08T05:20:21.002Z",
+    "updated_at": "2025-06-08T05:20:21.002Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 8,
+  "fields": {
+    "nom": "EST",
+    "created_at": "2025-06-08T05:20:21.003Z",
+    "updated_at": "2025-06-08T05:20:21.003Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 9,
+  "fields": {
+    "nom": "EPS",
+    "created_at": "2025-06-08T05:20:21.005Z",
+    "updated_at": "2025-06-08T05:20:21.005Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 10,
+  "fields": {
+    "nom": "Informatique",
+    "created_at": "2025-06-08T05:20:21.006Z",
+    "updated_at": "2025-06-08T05:20:21.006Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 11,
+  "fields": {
+    "nom": "Économie",
+    "created_at": "2025-06-08T05:20:21.007Z",
+    "updated_at": "2025-06-08T05:20:21.007Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 12,
+  "fields": {
+    "nom": "Anglais",
+    "created_at": "2025-06-08T05:20:21.008Z",
+    "updated_at": "2025-06-08T05:20:21.008Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 13,
+  "fields": {
+    "nom": "Espagnol",
+    "created_at": "2025-06-08T05:20:21.010Z",
+    "updated_at": "2025-06-08T05:20:21.010Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 14,
+  "fields": {
+    "nom": "Allemand",
+    "created_at": "2025-06-08T05:20:21.011Z",
+    "updated_at": "2025-06-08T05:20:21.011Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 15,
+  "fields": {
+    "nom": "Ar",
+    "created_at": "2025-06-08T05:20:21.236Z",
+    "updated_at": "2025-06-08T05:20:21.236Z"
+  }
+},
+{
+  "model": "blog.matière",
+  "pk": 16,
+  "fields": {
+    "nom": "Technologie",
+    "created_at": "2025-06-08T05:20:21.244Z",
+    "updated_at": "2025-06-08T05:20:21.244Z"
+  }
+},
+{
+  "model": "blog.epreuve",
+  "pk": 1,
+  "fields": {
+    "titre": "Matières",
+    "fichier": "epreuves/image1_dclic.png",
+    "prix": "100.00",
+    "matiere": 3,
+    "niveau": "Tle",
+    "annee": "2024",
+    "telechargements": 0,
+    "created_at": "2025-05-23T15:03:07.185Z"
+  }
+},
+{
+  "model": "blog.epreuve",
+  "pk": 2,
+  "fields": {
+    "titre": "SVT",
+    "fichier": "epreuves/image1_dclic_nCVPlfB.png",
+    "prix": "100.00",
+    "matiere": 4,
+    "niveau": "Tle",
+    "annee": "2024",
+    "telechargements": 0,
+    "created_at": "2025-05-23T17:07:15.367Z"
+  }
+}
+]
