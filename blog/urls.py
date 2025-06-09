@@ -1,9 +1,11 @@
 from django.urls import path, include
+from django.contrib import admin
 from . import views
 from django.contrib.auth import views as auth_views
 
 
 urlpatterns=[
+    path('admin/', admin.site.urls),
     path('',views.home, name='home'),
     path('matiere/<int:matiere_id>/', views.epreuves_par_matiere, name='epreuves_par_matiere'),
     path('rechercher/', views.rechercher, name='rechercher'),
