@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
+import os
 from .models import Epreuve, Matière, FicheCours
 from django.db.models import Q, Count
-import os
 from django.http import FileResponse, Http404
 from .forms import CustomUserCreationForm
 from django.core.paginator import Paginator
@@ -11,15 +11,64 @@ from django.core.mail import send_mail
 from django.contrib import messages
 
 
-# Create your views here.
+def get_matiere_icon(nom):
+    return {
+        "Mathématiques": "📐",
+        "Physique-Chimie": "⚛️",
+        "Français": "📚",
+        "SVT": "🔬",
+        "Anglais": "🇬🇧",
+        "Histoire-Géographie": "🌍",
+        "Philosophie": "🤔",
+        "EPS": "🏃",
+        "Informatique": "💻",
+        "Économie": "💰",
+        "Technologie": "🔧",
+        "Espagnol": "🗣️",
+        "Allemand": "🗣️",
+        "Arts Appliqués": "🎨",
+    }.get(nom, "📘")
+
 def home(request):
+    matieres = Matière.objects.annotate(
+        nb_epreuves=Count('epreuve'),
+        nb_fiches=Count('fichecours')
+    )
+
+    for matiere in matieres:
+        if matiere.nom == "Mathématiques":
+            matiere.icon = "📐"
+        elif matiere.nom == "Physique-Chimie":
+            matiere.icon = "⚛️"
+        elif matiere.nom == "Français":
+            matiere.icon = "📚"
+        elif matiere.nom in ["SVT", "Sciences de la Vie et de la Terre"]:
+            matiere.icon = "🔬"
+        else:
+            matiere.icon = "📘"
+
     epreuves = Epreuve.objects.all()
-    matieres = Matière.objects.all()
-    context = {
-        'epreuves': epreuves,
-        'matieres': matieres
-    }
-    return render(request, 'index.html', context)
+    fiches = FicheCours.objects.all()
+
+    for e in epreuves:
+        e.type_contenu = 'epreuve'
+        e.icon = get_matiere_icon(e.matiere.nom if e.matiere else "")
+
+    for f in fiches:
+        f.type_contenu = 'fiche'
+        f.icon = get_matiere_icon(f.matiere.nom if f.matiere else "")
+
+    contenus = sorted(
+        chain(epreuves, fiches),
+        key=attrgetter('telechargements'),
+        reverse=True
+    )[:5]  # Limiter aux 5 plus populaires
+
+    return render(request, 'index.html', {
+        'matieres': matieres,
+        'contenus_populaires': contenus,
+    })
+
 
 def epreuves_par_matiere(request, matiere_id):
     matiere = Matière.objects.get(id=matiere_id)
@@ -32,27 +81,7 @@ def epreuves_par_matiere(request, matiere_id):
     }
     return render(request, 'epreuves_par_matiere.html', context)
 
-def home(request):
-    context = {
-        'maths_count': Epreuve.objects.filter(matiere__nom__icontains='Mathématiques').count(),
-        'physique_count': Epreuve.objects.filter(matiere__nom__icontains='Physique-Chimie').count(),
-        'francais_count': Epreuve.objects.filter(matiere__nom__icontains='Français').count(),
-        'svt_count': Epreuve.objects.filter(matiere__nom__icontains='SVT').count(),
-        'anglais_count': Epreuve.objects.filter(matiere__nom__icontains='Anglais').count(),
-        'histoire_geo_count': Epreuve.objects.filter(matiere__nom__icontains='Histoire-Géographie').count(),
-        'philosophie_count': Epreuve.objects.filter(matiere__nom__icontains='Philosophie').count(),
-        'est_count': Epreuve.objects.filter(matiere__nom__icontains='EST').count(),
-        'es_count': Epreuve.objects.filter(matiere__nom__icontains='Ar').count(),
-        'sport_count': Epreuve.objects.filter(matiere__nom__icontains='EPS').count(),
-        'info_count': Epreuve.objects.filter(matiere__nom__icontains='Informatique').count(),
-        'eco_count': Epreuve.objects.filter(matiere__nom__icontains='Économie').count(),
-        'techno_count': Epreuve.objects.filter(matiere__nom__icontains='Technologie').count(),
-        'langues_count': Epreuve.objects.filter(matiere__nom__icontains='Langues').count(),
-        'arts_appliques_count': Epreuve.objects.filter(matiere__nom__icontains='Arts Appliqués').count(),
-        'maths_tech_count': Epreuve.objects.filter(matiere__nom__icontains='Mathématiques et Sciences de l\'Ingénieur').count(),
-        'sciences_count': Epreuve.objects.filter(matiere__nom__icontains='Sciences').count(),
-    }
-    return render(request, 'index.html', context)
+ 
 
 def rechercher(request):
     query = request.GET.get('q', '')
@@ -89,10 +118,6 @@ def rechercher(request):
     }
 
     return render(request, 'rechercher.html', context)
-
-def home(request):
-    epreuves_populaires = Epreuve.objects.order_by('-telechargements')[:4]
-    return render(request, 'index.html', {'epreuves_populaires': epreuves_populaires})
 
 def liste_epreuves(request):
     epreuves = Epreuve.objects.all()
@@ -158,9 +183,6 @@ def liste_matieres(request):
     return render(request, 'liste_matieres.html', {'matieres': matieres})
 
 def register(request):
-    return render(request, 'register.html')
-
-def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -169,26 +191,6 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
-
-def home(request):
-    matieres = Matière.objects.annotate(
-        nb_epreuves=Count('epreuve'),
-        nb_fiches=Count('fichecours')
-    )
-
-    for matiere in matieres:
-        if matiere.nom == "Mathématiques":
-            matiere.icon = "📐"
-        elif matiere.nom == "Physique-Chimie":
-            matiere.icon = "⚛️"
-        elif matiere.nom == "Français":
-            matiere.icon = "📚"
-        elif matiere.nom == "SVT" or matiere.nom == "Sciences de la Vie et de la Terre":
-            matiere.icon = "🔬"
-        else:
-            matiere.icon = "📘"
-            
-    return render(request, 'index.html', {'matieres': matieres})
 
 def liste_epreuves(request):
     epreuves = Epreuve.objects.all()
@@ -254,14 +256,6 @@ def apercu_epreuve(request, epreuve_id):
 def apropos(request):
     return render(request, 'apropos.html')
 
-def accueil(request):
-    epreuves_populaires = Epreuve.objects.order_by('-telechargements')[:4]
-    fiches_populaires = FicheCours.objects.order_by('-telechargements')[:4]
-    return render(request, 'index.html', {
-        'epreuves_populaires': epreuves_populaires,
-        'fiches_populaires': fiches_populaires,
-    })
-
 def apercu_fiche(request, fiche_id):
     fiche = get_object_or_404(FicheCours, pk=fiche_id)
     return render(request, 'apercu_fiche.html', {'fiche': fiche})
@@ -276,29 +270,37 @@ def contenus_populaires(request):
     epreuves = Epreuve.objects.all()
     fiches = FicheCours.objects.all()
 
+    for e in epreuves:
+        e.type_contenu = 'epreuve'
+        e.icon = get_matiere_icon(e.matiere.nom if e.matiere else "")
+
+    for f in fiches:
+        f.type_contenu = 'fiche'
+        f.icon = get_matiere_icon(f.matiere.nom if f.matiere else "")
     
-    for epreuve in epreuves:
-        epreuve.type_contenu = 'epreuve'
-    for fiche in fiches:
-        fiche.type_contenu = 'fiche'
+
     contenus = sorted(
         chain(epreuves, fiches),
         key=attrgetter('telechargements'),
         reverse=True
-    )[:8]  # Limiter aux 8 plus populaires
+    )[:15]  # Limiter aux 15 plus populaires
+    
+    return render(request, 'contenus_populaires.html', {'contenus': contenus})
 
-
-    fiches_populaires = FicheCours.objects.order_by('-telechargements')[:8]
-    return render(request, 'index.html', {
-        'contenus_populaires': contenus,
-    })
+    
 
 def epreuves_recentes(request):
     epreuves = Epreuve.objects.order_by('-created_at')[:10]
+    for e in epreuves:
+        e.icon = get_matiere_icon(e.matiere.nom if e.matiere else "")
+
     return render(request, 'epreuves_recentes.html', {'epreuves': epreuves})
 
 def fiches_recentes(request):
     fiches = FicheCours.objects.order_by('-created_at')[:10]
+    for f in fiches:
+        f.icon = get_matiere_icon(f.matiere.nom if f.matiere else "")
+
     return render(request, 'fiches_recentes.html', {'fiches': fiches})
 
 def faq(request):

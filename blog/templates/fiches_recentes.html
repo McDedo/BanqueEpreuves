@@ -6,7 +6,9 @@
     {% for fiche in fiches %}
       <div class="col">
         <div class="card h-100 shadow-sm">
-          <img src="{{ fiche.image_url }}" class="card-img-top" alt="Illustration" style="height: 160px; object-fit: cover;">
+          <div class="card-img-top d-flex justify-content-center align-items-center bg-light" style="height: 160px; font-size: 4rem;">
+            {{ contenu.icon }}
+          </div>
           <div class="card-body">
             <h5 class="card-title">{{ fiche.titre }}</h5>
             <p>{{ fiche.matiere.nom }} · {{ fiche.niveau }}</p>

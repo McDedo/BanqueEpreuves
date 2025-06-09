@@ -6,7 +6,9 @@
     {% for epreuve in epreuves %}
       <div class="col">
         <div class="card h-100 shadow-sm">
-          <img src="{{ epreuve.image_url }}" class="card-img-top" alt="Illustration" style="height: 160px; object-fit: cover;">
+          <div class="card-img-top d-flex justify-content-center align-items-center bg-light" style="height: 160px; font-size: 4rem;">
+            {{ contenu.icon }}
+          </div>
           <div class="card-body">
             <h5 class="card-title">{{ epreuve.titre }}</h5>
             <p>{{ epreuve.annee }} · {{ epreuve.niveau }}</p>

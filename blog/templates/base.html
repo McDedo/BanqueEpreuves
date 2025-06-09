@@ -90,6 +90,18 @@
       border-color: #6f42c1;
     }
 
+    .search-input:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    @media (max-width: 576px) {
+      .form-select,
+      .search-input {
+        min-width: 100% !important;
+      }
+    }
+
   </style>
 
   {% block extra_head %}{% endblock %}

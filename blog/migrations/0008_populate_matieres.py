@@ -10,7 +10,6 @@ def add_matieres(apps, schema_editor):
         "Histoire-Géographie",
         "Philosophie",
         "EST",
-        "Ar",
         "EPS",
         "Informatique",
         "Économie",
