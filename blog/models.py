@@ -18,6 +18,8 @@ class Epreuve(models.Model):
         ('4e', 'Quatrième'),
         ('5e', 'Cinquième'),
         ('6e', 'Sixième'),
+        ('Maternelle1', 'Maternelle 1'),
+        ('Maternelle2', 'Maternelle 2'),
         ('CI', 'Cours d\'Initiation'),
         ('CP', 'Cours Préparatoire'),
         ('CE1', 'Cours Élémentaire 1'),
@@ -32,7 +34,12 @@ class Epreuve(models.Model):
         ('1ère', '1ère'),
         ('Tle', 'Terminale'),
         ('BTS', 'BTS'),
-        ('Licence', 'Licence'),
+        ('Licence1', 'Licence1'),
+        ('Licence2', 'Licence2'),
+        ('Licence3', 'Licence3'),
+        ('Master1', 'Master1'),
+        ('Master2', 'Master2'),
+        ('Doctorat', 'Doctorat'),
     ]
 
     titre = models.CharField(max_length=255)
@@ -61,6 +68,8 @@ class FicheCours(models.Model):
             ('4e', 'Quatrième'),
             ('5e', 'Cinquième'),
             ('6e', 'Sixième'),
+            ('Maternelle1', 'Maternelle 1'),
+            ('Maternelle2', 'Maternelle 2'),
             ('CI', 'Cours d\'Initiation'),
             ('CP', 'Cours Préparatoire'),
             ('CE1', 'Cours Élémentaire 1'),
