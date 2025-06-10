@@ -117,7 +117,6 @@
                 <a href="{% url 'aperçu_epreuve' contenu.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
                 <a href="{% url 'telecharger_epreuve' contenu.id %}" class="btn btn-primary">Télécharger</a>
               {% else %}
-                <a href="{% url 'aperçu_fiche' contenu.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
                 <a href="{% url 'telecharger_fiche' contenu.id %}" class="btn btn-primary">Télécharger</a>
               {% endif %}
             </div>

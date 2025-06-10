@@ -1,39 +1,55 @@
 {% extends 'base.html' %}
-
-{% block title %}Fiches de cours{% endblock %}
+{% block title %}Liste des fiches de cours{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center mb-4 fw-bold">📘 Fiches de cours</h2>
+<div class="container py-5">
+  <h2 class="text-center mb-4 fw-bold">📘 Liste des fiches de cours</h2>
 
   {% if fiches %}
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      {% for fiche in fiches %}
-        <div class="col">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title fw-bold">{{ fiche.titre }}</h5>
-              <p class="card-text text-muted mb-1">
-                📚 {{ fiche.matiere.nom }} — {{ fiche.annee }}
-              </p>
-              <p class="card-text">
-                🎓 Niveau : {{ fiche.niveau }}
-              </p>
-              <div class="d-flex justify-content-between mt-3">
-                <a href="{% url 'apercu_fiche' fiche.id %}" class="btn btn-outline-primary apercu-btn">
-                  <i class="bi bi-eye"></i> Aperçu
-                </a>
-                <a href="{% url 'telecharger_fiche' fiche.id %}" class="btn btn-primary">
-                  <i class="bi bi-download"></i> Télécharger
-                </a>
-              </div>
-            </div>
-          </div>
+    {% for fiche in fiches %}
+      <div class="mb-5">
+        <h5 class="fw-bold">{{ fiche.titre }}</h5>
+        <p><strong>Matière :</strong> {{ fiche.icone }} {{ fiche.matiere.nom }}</p>
+        <p><strong>Niveau :</strong> {{ fiche.niveau }}</p>
+        <hr>
+        <div>
+          {{ fiche.contenu|linebreaks }}
         </div>
-      {% endfor %}
-    </div>
+        <a href="{% url 'telecharger_fiche' fiche.id %}" class="btn btn-primary mt-3">
+          <i class="bi bi-download"></i> Télécharger
+        </a>
+      </div>
+      <hr>
+    {% endfor %}
+
+    <!-- Pagination -->
+    {% if page_obj %}
+    <nav class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Précédent">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+          <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+          </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Suivant">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
   {% else %}
-    <p class="text-center text-muted">Aucune fiche de cours disponible pour le moment.</p>
+    <p class="text-center text-muted">Aucune fiche disponible pour le moment.</p>
   {% endif %}
 </div>
 {% endblock %}

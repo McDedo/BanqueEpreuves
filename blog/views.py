@@ -136,6 +136,9 @@ def liste_epreuves(request):
             Q(matière__nom__icontains=query) 
         )
 
+    for e in epreuves:
+        e.icone = get_matiere_icon(e.matiere.nom)
+
     if niveau:
         epreuves = epreuves.filter(niveau=niveau)
 
@@ -215,7 +218,7 @@ def contact(request):
     return render(request, 'contact.html')
 
 def fiches_cours(request):
-    fiches = FicheCours.objects.all().order_by('created_at')
+    fiches = FicheCours.objects.all()
     matieres = Matière.objects.all()
     niveaux = FicheCours.objects.values_list('niveau', flat=True).distinct()
 
@@ -232,6 +235,9 @@ def fiches_cours(request):
             niveau__icontains=query
         ) | fiches.filter(matiere__nom__icontains=query
         )
+
+    for fiche in fiches:
+        fiche.icone = get_matiere_icon(fiche.matiere.nom)
 
     if niveau:
         fiches = fiches.filter(niveau=niveau)
