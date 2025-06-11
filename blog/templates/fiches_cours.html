@@ -11,6 +11,7 @@
         <h5 class="fw-bold">{{ fiche.titre }}</h5>
         <p><strong>Matière :</strong> {{ fiche.icone }} {{ fiche.matiere.nom }}</p>
         <p><strong>Niveau :</strong> {{ fiche.niveau }}</p>
+        <p>URL Cloudinary : {{ fiche.fichier.url }}</p>  {# ligne temporaire #}
         <hr>
         <div>
           {{ fiche.contenu|linebreaks }}
