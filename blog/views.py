@@ -12,6 +12,8 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.http import Http404
 import re
+import cloudinary
+import cloudinary.utils
 
 
 def get_matiere_icon(nom):
@@ -173,10 +175,15 @@ def telecharger_epreuve(request, epreuve_id):
     if not epreuve.fichier:
         raise Http404("Fichier introuvable.")
     
-    url = epreuve.fichier.url
-    url_dl = re.sub(r'/upload/', '/upload/fl_attachment/', url)
+    url_signed = cloudinary.utils.cloudinary_url(
+        epreuve.fichier.name,
+        resource_type='raw',  # fichier non image (pdf, doc...)
+        sign_url=True,
+        attachment=True,
+        expires=86400
+    )[0]
 
-    return redirect(url_dl)
+    return redirect(url_signed)
 
 
 def epreuves_par_matiere(request, matiere_id):
@@ -284,12 +291,15 @@ def telecharger_fiche(request, fiche_id):
     if not fiche.fichier:
         raise Http404("Fichier introuvable.")
     
-    url = fiche.fichier.url
+    url_signed = cloudinary.utils.cloudinary_url(
+        fiche.fichier.name,
+        resource_type='raw',  # fichier non image (pdf, doc...)
+        sign_url=True,
+        attachment=True,
+        expires=86400
+    )[0]
 
-    # Ajouter fl_attachment pour forcer le téléchargement
-    url_dl = re.sub(r'/upload/', '/upload/fl_attachment/', url)
-
-    return redirect(url_dl)
+    return redirect(url_signed)
     
 
 def contenus_populaires(request):
