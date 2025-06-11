@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 # Create your models here.
 class Matière(models.Model):
@@ -43,7 +44,7 @@ class Epreuve(models.Model):
     ]
 
     titre = models.CharField(max_length=255)
-    fichier = models.FileField(upload_to='epreuves/')
+    fichier = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
     prix = models.DecimalField(max_digits=6, decimal_places=2)
     matiere = models.ForeignKey(Matière, on_delete=models.CASCADE)
     niveau = models.CharField(max_length=100, choices=NIVEAUX, default='Tle')
@@ -57,7 +58,7 @@ class Epreuve(models.Model):
 class FicheCours(models.Model):
     titre = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    fichier = models.FileField(upload_to='fiches/')
+    fichier = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
     matiere = models.ForeignKey(Matière, on_delete=models.CASCADE)
     prix = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     niveau = models.CharField(max_length=50, choices=[
