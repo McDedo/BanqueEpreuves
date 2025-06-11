@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "blog",
     'app_auth',
-    "widget_tweaks"
+    'widget_tweaks',
     'cloudinary',
     'cloudinary_storage',
 ]
