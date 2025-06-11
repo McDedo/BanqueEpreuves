@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 import os
 from .models import Epreuve, Matière, FicheCours
+from django.conf import settings
 from django.db.models import Q, Count
 from django.http import FileResponse, Http404
 from .forms import CustomUserCreationForm
@@ -268,9 +269,18 @@ def apercu_fiche(request, fiche_id):
 
 def telecharger_fiche(request, fiche_id):
     fiche = get_object_or_404(FicheCours, id=fiche_id)
+
     fiche.telechargements += 1
     fiche.save()
-    return FileResponse(fiche.fichier.open(), as_attachment=True, filename=fiche.fichier.name.split('/')[-1])
+
+    if not fiche.fichier:
+        raise Http404("Fichier introuvable.")
+    
+    fichier_path = os.path.join(settings.MEDIA_ROOT, fiche.fichier.name)
+
+    if not os.path.exists(fichier_path):
+        raise Http404("Fichier introuvable.")
+    return FileResponse(open(fichier_path, 'rb'), as_attachment=True, filename=os.path.basename(fiche.fichier.name)) 
 
 def contenus_populaires(request):
     epreuves = Epreuve.objects.all()
