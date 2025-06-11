@@ -10,6 +10,8 @@ from itertools import chain
 from operator import attrgetter
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.http import Http404
+import re
 
 
 def get_matiere_icon(nom):
@@ -164,12 +166,18 @@ def aperçu_epreuve(request, epreuve_id):
     return render(request, 'aperçu_epreuve.html', {'epreuve': epreuve})
 
 def telecharger_epreuve(request, epreuve_id):
-    try:
-        epreuve = Epreuve.objects.get(pk=epreuve_id)
-        fichier_path = epreuve.fichier.path
-        return FileResponse(open(fichier_path, 'rb'), as_attachment=True, filename=os.path.basename(fichier_path))
-    except Epreuve.DoesNotExist:
-        raise Http404("Épreuve non trouvée.")
+    epreuve = get_object_or_404(Epreuve, id=epreuve_id)
+    epreuve.telechargements += 1
+    epreuve.save()
+
+    if not epreuve.fichier:
+        raise Http404("Fichier introuvable.")
+    
+    url = epreuve.fichier.url
+    url_dl = re.sub(r'/upload/', '/upload/fl_attachment/', url)
+
+    return redirect(url_dl)
+
 
 def epreuves_par_matiere(request, matiere_id):
     matiere = get_object_or_404(Matière, id=matiere_id)
@@ -272,15 +280,17 @@ def telecharger_fiche(request, fiche_id):
 
     fiche.telechargements += 1
     fiche.save()
-
+    
     if not fiche.fichier:
         raise Http404("Fichier introuvable.")
     
-    fichier_path = os.path.join(settings.MEDIA_ROOT, fiche.fichier.name)
+    url = fiche.fichier.url
 
-    if not os.path.exists(fichier_path):
-        raise Http404("Fichier introuvable.")
-    return FileResponse(open(fichier_path, 'rb'), as_attachment=True, filename=os.path.basename(fiche.fichier.name)) 
+    # Ajouter fl_attachment pour forcer le téléchargement
+    url_dl = re.sub(r'/upload/', '/upload/fl_attachment/', url)
+
+    return redirect(url_dl)
+    
 
 def contenus_populaires(request):
     epreuves = Epreuve.objects.all()
