@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Epreuve, Matière, FicheCours
+from .models import Epreuve, Matiere, FicheCours
 import re
 
 @admin.register(Epreuve)
@@ -14,7 +14,7 @@ class EpreuveAdmin(admin.ModelAdmin):
     
     lien_fichier_cloudinary.short_description = 'Fichier Cloudinary'
 
-@admin.register(Matière)
+@admin.register(Matiere)
 class MatiereAdmin(admin.ModelAdmin):
     list_display = ('nom',)
 

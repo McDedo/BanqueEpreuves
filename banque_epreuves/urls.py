@@ -25,5 +25,5 @@ urlpatterns = [
     path('auth/', include('app_auth.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG and getattr(settings, 'MEDIA_URL', None):
+    urlpatterns += static(settings.MEDIA_URL, document_root=getattr(settings, 'MEDIA_ROOT', None))

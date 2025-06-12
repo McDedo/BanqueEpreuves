@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 import os
-from .models import Epreuve, Matière, FicheCours
+from .models import Epreuve, Matiere, FicheCours
 from django.conf import settings
 from django.db.models import Q, Count
 from django.http import FileResponse, Http404
@@ -14,28 +14,11 @@ from django.http import Http404
 import re
 import cloudinary
 import cloudinary.utils
+from .utils import get_matiere_icon
 
-
-def get_matiere_icon(nom):
-    return {
-        "Mathématiques": "📐",
-        "Physique-Chimie": "⚛️",
-        "Français": "📚",
-        "SVT": "🔬",
-        "Anglais": "🇬🇧",
-        "Histoire-Géographie": "🌍",
-        "Philosophie": "🤔",
-        "EPS": "🏃",
-        "Informatique": "💻",
-        "Économie": "💰",
-        "Technologie": "🔧",
-        "Espagnol": "🗣️",
-        "Allemand": "🗣️",
-        "Arts Appliqués": "🎨",
-    }.get(nom, "📘")
 
 def home(request):
-    matieres = Matière.objects.annotate(
+    matieres = Matiere.objects.annotate(
         nb_epreuves=Count('epreuve'),
         nb_fiches=Count('fichecours')
     )
@@ -76,7 +59,7 @@ def home(request):
 
 
 def epreuves_par_matiere(request, matiere_id):
-    matiere = Matière.objects.get(id=matiere_id)
+    matiere = get_object_or_404(Matiere, id=matiere_id)
     epreuves = Epreuve.objects.filter(matiere=matiere)
     fiches = FicheCours.objects.filter(matiere=matiere)
     context = {
@@ -126,7 +109,7 @@ def rechercher(request):
 
 def liste_epreuves(request):
     epreuves = Epreuve.objects.all()
-    matieres = Matière.objects.all()
+    matieres = Matiere.objects.all()
     niveaux = Epreuve.objects.values_list('niveau', flat=True).distinct()
 
     query = request.GET.get('q')
@@ -185,20 +168,8 @@ def telecharger_epreuve(request, epreuve_id):
 
     return redirect(url_signed)
 
-
-def epreuves_par_matiere(request, matiere_id):
-    matiere = get_object_or_404(Matière, id=matiere_id)
-    epreuves = Epreuve.objects.filter(matiere=matiere)
-    fiches = FicheCours.objects.filter(matiere=matiere)
-    context = {
-        'epreuves': epreuves,
-        'matiere': matiere,
-        'fiches': fiches,
-    }
-    return render(request, "epreuves_par_matiere.html", context)
-
 def liste_matieres(request):
-    matieres = Matière.objects.all()
+    matieres = Matiere.objects.all()
     return render(request, 'liste_matieres.html', {'matieres': matieres})
 
 def register(request):
@@ -210,10 +181,6 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
-
-def liste_epreuves(request):
-    epreuves = Epreuve.objects.all()
-    return render(request, 'épreuves/liste.html', {'epreuves': epreuves})
 
 def contact(request):
     if request.method == "POST":
@@ -235,7 +202,7 @@ def contact(request):
 
 def fiches_cours(request):
     fiches = FicheCours.objects.all()
-    matieres = Matière.objects.all()
+    matieres = Matiere.objects.all()
     niveaux = FicheCours.objects.values_list('niveau', flat=True).distinct()
 
     query = request.GET.get('q')

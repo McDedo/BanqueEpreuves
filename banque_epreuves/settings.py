@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import dj_database_url
 import os
-import dotenv
+import environ
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -21,17 +21,29 @@ import cloudinary.api
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# Initialiser environ
+env = environ.Env(
+    # valeurs par défaut et types pour tes variables, exemple :
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, [])
+)
+
+environ.Env.read_env(env_file=BASE_DIR / '.env')
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_sb3jfls#lcnp1hx2)c9ue^n3g9rlr+^$94+ks_f_9j(!!08g4'
-SECRET_KEY = os.environ.get("SECRET_KEY", "clé-par-défaut-invalide")
+SECRET_KEY = env('SECRET_KEY', default='clé-par-défaut-invalide')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['banqueepreuves.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['banqueepreuves.onrender.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['banqueepreuves.onrender.com', '127.0.0.1', 'localhost'])
 
 
 # Application definition
@@ -87,14 +99,9 @@ WSGI_APPLICATION = 'banque_epreuves.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-dotenv.load_dotenv()
 
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.getenv('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )           
+    'default': env.db('DATABASE_URL')  # Utilise la variable d'environnement DATABASE_URL
 }
 
 
@@ -153,7 +160,7 @@ LOGOUT_REDIRECT_URL = 'home'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': env('CLOUDINARY_API_KEY'),
+    'API_SECRET': env('CLOUDINARY_API_SECRET'),
 }
