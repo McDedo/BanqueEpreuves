@@ -42,8 +42,7 @@ SECRET_KEY = env('SECRET_KEY', default='clé-par-défaut-invalide')
 DEBUG = False
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['banqueepreuves.onrender.com','127.0.0.1','localhost']
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['banqueepreuves.onrender.com', '127.0.0.1', 'localhost'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
 
 # Application definition
