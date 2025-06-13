@@ -18,7 +18,6 @@ class Epreuve(models.Model):
     fichier = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
     prix = models.DecimalField(max_digits=6, decimal_places=2)
     matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE)
-    niveau = models.CharField(max_length=100, choices=NIVEAUX, default='Tle')
     annee = models.CharField(max_length=10, default='2024')
     telechargements = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

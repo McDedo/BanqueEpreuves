@@ -40,7 +40,7 @@ SECRET_KEY = env('SECRET_KEY', default='clé-par-défaut-invalide')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-DEBUG = env('DEBUG', default='True')
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 

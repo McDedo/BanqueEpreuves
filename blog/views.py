@@ -121,7 +121,7 @@ def liste_epreuves(request):
             Q(titre__icontains=query) |
             Q(niveau__icontains=query) |
             Q(annee__icontains=query) |
-            Q(matière__nom__icontains=query) 
+            Q(matiere__nom__icontains=query) 
         )
 
     for e in epreuves:
@@ -131,7 +131,7 @@ def liste_epreuves(request):
         epreuves = epreuves.filter(niveau=niveau)
 
     if matiere_id:
-        epreuves = epreuves.filter(matière__id=matiere_id)
+        epreuves = epreuves.filter(matiere__id=matiere_id)
 
     paginator = Paginator(epreuves, 10)  # 10 epreuves par page
     page_number = request.GET.get('page')

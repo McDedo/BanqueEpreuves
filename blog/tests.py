@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from .models import Epreuve, Matière, FicheCours
+from .models import Epreuve, Matiere, FicheCours
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch
 
@@ -8,7 +8,7 @@ class ViewsTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.matiere = Matière.objects.create(nom="Mathématiques")
+        self.matiere = Matiere.objects.create(nom="Mathématiques")
         self.epreuve = Epreuve.objects.create(
             titre="Epreuve test",
             matiere=self.matiere,
