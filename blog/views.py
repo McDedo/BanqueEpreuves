@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 import os
-from .models import Epreuve, Matiere, FicheCours
+from .models import Epreuve, Matiere, FicheCours, GuideFormation, Arrete, Actualite
 from django.conf import settings
 from django.db.models import Q, Count
 from django.http import FileResponse, Http404
@@ -334,3 +334,90 @@ def mentions_legales(request):
 
 def cookies(request):
     return render(request, 'cookies.html')
+
+def guides_formation(request):
+    guides = GuideFormation.objects.all()
+    matieres = Matiere.objects.all()
+    niveaux = GuideFormation.objects.values_list('niveau', flat=True).distinct()
+
+    query = request.GET.get('q')
+    niveau = request.GET.get('niveau')
+    matiere_id = request.GET.get('matiere')
+    
+    if query:
+        guides = guides.filter(
+            Q(titre__icontains=query) |
+            Q(annee__icontains=query) |
+            Q(niveau__icontains=query) |
+            Q(matiere__nom__icontains=query)
+        )
+
+    for guide in guides:
+        guide.icone = get_matiere_icon(guide.matiere.nom)
+
+    if niveau:
+        guides = guides.filter(niveau=niveau)
+
+    if matiere_id:
+        guides = guides.filter(matiere__id=matiere_id)
+
+    context = {
+        'guides': guides,
+        'matieres': matieres,
+        'niveaux': niveaux,
+    }
+    return render(request, 'guides_formation.html', context)
+
+def telecharger_guide(request, guide_id):
+    guide = get_object_or_404(GuideFormation, id=guide_id)
+    guide.telechargements += 1
+    guide.save()
+
+    if not guide.fichier:
+        raise Http404("Fichier introuvable.")
+    
+    url_signed = cloudinary.utils.cloudinary_url(
+        guide.fichier.name,
+        resource_type='raw',
+        sign_url=True,
+        attachment=True,
+        expires=86400
+    )[0]
+
+    return redirect(url_signed)
+
+def arretes(request):
+    arretes = Arrete.objects.order_by('-date_publication')
+    return render(request, 'arretes.html', {'arretes': arretes})
+
+def telecharger_arrete(request, arrete_id):
+    arrete = get_object_or_404(Arrete, id=arrete_id)
+
+    if not arrete.fichier:
+        raise Http404("Fichier introuvable.")
+    
+    url_signed = cloudinary.utils.cloudinary_url(
+        arrete.fichier.name,
+        resource_type='raw',
+        sign_url=True,
+        attachment=True,
+        expires=86400
+    )[0]
+
+    return redirect(url_signed)
+
+def actualites(request):
+    query = request.GET.get('q')
+    actualites = Actualite.objects.all().order_by('-date_publication')
+
+    if query:
+        actualites = actualites.filter(
+            Q(titre__icontains=query) |
+            Q(contenu__icontains=query)
+        )
+
+    return render(request, 'actualites.html', {
+        'actualites': actualites,
+        'query': query,
+    })
+

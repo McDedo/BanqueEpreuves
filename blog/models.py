@@ -38,3 +38,38 @@ class FicheCours(models.Model):
 
     def __str__(self):
         return f"{self.titre} ({self.niveau} - {self.annee})"
+
+
+class GuideFormation(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    fichier = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
+    matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE)
+    niveau = models.CharField(max_length=100, choices=NIVEAUX, default='Tle')
+    annee = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    telechargements = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Guide: {self.titre} ({self.niveau} - {self.annee})"
+
+class Arrete(models.Model):
+    titre = models.CharField(max_length=200)
+    fichier = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
+    date_publication = models.DateField()
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Arrêté: {self.titre} - {self.date_publication}"
+
+class Actualite(models.Model):
+    titre = models.CharField(max_length=200)
+    contenu = models.TextField()
+    date_publication = models.DateField(auto_now_add=True)
+    fichier = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
+    image = models.ImageField(storage=MediaCloudinaryStorage(), blank=True, null=True)
+    lien_externe = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.titre

@@ -114,7 +114,7 @@
             </p>
             <div class="d-flex justify-content-between">
               {% if contenu.type_contenu == "epreuve" %}
-                <a href="{% url 'aperçu_epreuve' contenu.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
+                <a href="{% url 'apercu_epreuve' contenu.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
                 <a href="{% url 'telecharger_epreuve' contenu.id %}" class="btn btn-primary">Télécharger</a>
               {% else %}
                 <a href="{% url 'telecharger_fiche' contenu.id %}" class="btn btn-primary">Télécharger</a>
@@ -170,15 +170,15 @@
       </a>
     </div>
 
-    <!-- Bloc 3 : Communauté d'entraide -->
+    <!-- Bloc 3 : Actualités du monde scolaire -->
     <div style="background-color: #f3f4f6; padding: 2rem; border-radius: 0.75rem; flex: 1; min-width: 280px; text-align: center;">
-      <div style="font-size: 2rem; margin-bottom: 1rem;">🤝</div>
-      <h3 style="font-weight: bold; font-size: 1.25rem;">Communauté d'entraide</h3>
+      <div style="font-size: 2rem; margin-bottom: 1rem;">📰</div>
+      <h3 style="font-weight: bold; font-size: 1.25rem;">Actualités du monde scolaire</h3>
       <p style="color: #6B7280; margin: 1rem 0;">
-        Échangez avec d'autres étudiants et partagez vos connaissances.
+        Restez informé des dernières nouvelles, réformes et annonces dans le secteur éducatif.
       </p>
-      <a href="#" style="color: #2563eb; font-weight: 500; text-decoration: none;">
-        Rejoindre la communauté ➡
+      <a href="{% url 'actualites' %}" style="color: #2563eb; font-weight: 500; text-decoration: none;">
+        Voir les actualités ➡
       </a>
     </div>
 
@@ -251,9 +251,11 @@
       <div class="col-md-3">
         <h5 class="fw-bold mb-3">Ressources</h5>
         <ul class="list-unstyled">
-          <li><a href="{% url 'liste_epreuves' %}" class="text-light text-decoration-none d-block">Épreuves</a></li>
+          <li><a href="{% url 'epreuves' %}" class="text-light text-decoration-none d-block">Épreuves</a></li>
           <li><a href="{% url 'liste_matieres' %}" class="text-light text-decoration-none d-block">Matières</a></li>
           <li><a href="{% url 'fiches_cours' %}" class="text-light text-decoration-none d-block">Fiches de cours</a></li>
+          <li><a href="{% url 'guides_formation' %}" class="text-light text-decoration-none d-block">Guides de formation</a></li>
+          <li><a href="{% url 'arretes' %}" class="text-light text-decoration-none d-block">Arrêtés</a></li>
         </ul>
       </div>
 
