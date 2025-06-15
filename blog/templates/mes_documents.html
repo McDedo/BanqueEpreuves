@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Mes Documents{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-primary"><i class="bi bi-folder2-open"></i> Mes Documents</h2>
+
+  {% if documents %}
+    <div class="list-group">
+      {% for doc in documents %}
+        <a href="{{ doc.file.url }}" target="_blank" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+          <div>
+            <i class="bi bi-file-earmark-text"></i>
+            {{ doc.file.name|cut:"documents/" }}
+          </div>
+          <small class="text-muted">Téléchargé le {{ doc.uploaded_at|date:"d/m/Y H:i" }}</small>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info" role="alert">
+      <i class="bi bi-info-circle"></i> Vous n'avez encore téléchargé aucun document.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

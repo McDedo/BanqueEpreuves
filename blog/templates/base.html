@@ -193,11 +193,33 @@
           </div>
         </form>
 
-        <!-- Connexion -->
+        <!-- Connexion / Profil -->
         <ul class="navbar-nav ms-3">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Connexion</a>
-          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item d-flex align-items-center me-2">
+              <span class="nav-link disabled">
+                👋 Bonjour, {{ user.first_name|default:user.username }}
+              </span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'mes_documents' %}">Mes documents</a>
+            </li>
+            <li class="nav-item">
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="nav-link btn btn-link" style="padding: 0; margin: 0; color: inherit; text-decoration: none;">
+                  Déconnexion
+                </button>
+              </form>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Connexion</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">Créer un compte</a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </div>

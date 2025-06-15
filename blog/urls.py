@@ -2,6 +2,7 @@ from django.urls import path, include
 from django.contrib import admin
 from . import views
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -10,9 +11,12 @@ urlpatterns = [
     path('', views.home, name='home'),
 
     # Authentification
-    path('login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('inscription/', views.register, name='register'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('mes-documents/', views.mes_documents, name='mes_documents'), 
+    path("logout/", LogoutView.as_view(), name="logout"),
+
 
     # Epreuves
     path('epreuves/', views.liste_epreuves, name='epreuves'),

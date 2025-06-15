@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from cloudinary_storage.storage import MediaCloudinaryStorage
 from .constants import NIVEAUX
 
@@ -73,3 +74,11 @@ class Actualite(models.Model):
 
     def __str__(self):
         return self.titre
+
+class Document(models.Model):
+    user = models.ForeignKey(User, related_name="documents", on_delete=models.CASCADE)
+    file = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.file.name

@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Initialiser environ
 env = environ.Env(
     # valeurs par défaut et types pour tes variables, exemple :
-    DEBUG=(bool, False),
+    DEBUG=(bool, True),
     ALLOWED_HOSTS=(list, [])
 )
 
@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "blog",
-    'app_auth',
     'widget_tweaks',
     'cloudinary',
     'cloudinary_storage',
@@ -152,9 +151,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 #MEDIA_ROOT = BASE_DIR / 'media'
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = '/login/'
 
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/mes-documents/'
+
+LOGOUT_REDIRECT_URL = '/login/'
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
