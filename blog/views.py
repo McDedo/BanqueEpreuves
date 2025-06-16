@@ -444,13 +444,15 @@ def logout_view(request):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Compte créé avec succès.")
-            return redirect('login')
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+        else:
+            print(form.errors)
     else:
-        form = UserCreationForm() 
+        form = CustomUserCreationForm()
 
     return render(request, 'register.html', {'form': form})
 
@@ -458,4 +460,3 @@ def register(request):
 def mes_documents(request):
     documents = request.user.documents.all()
     return render(request, 'mes_documents.html', {'documents': documents})
-
