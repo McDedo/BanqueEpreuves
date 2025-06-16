@@ -38,7 +38,7 @@ def home(request):
         else:
             matiere.icon = "📘"
 
-    epreuves = Epreuve.objects.all()
+    epreuves = Epreuve.objects.all().select_related('matiere')
     fiches = FicheCours.objects.all()
 
     for e in epreuves:
@@ -149,10 +149,7 @@ def liste_epreuves(request):
 
     return render(request, 'épreuves/liste.html', context)
 
-def aperçu_epreuve(request, epreuve_id):
-    epreuve = get_object_or_404(Epreuve, pk=epreuve_id)
-    return render(request, 'aperçu_epreuve.html', {'epreuve': epreuve})
-
+@login_required
 def telecharger_epreuve(request, epreuve_id):
     epreuve = get_object_or_404(Epreuve, id=epreuve_id)
     epreuve.telechargements += 1
@@ -241,17 +238,10 @@ def fiches_cours(request):
 def epreuves(request):
     return render(request, 'epreuves.html')
 
-def apercu_epreuve(request, epreuve_id):
-    epreuve = get_object_or_404(Epreuve, pk=epreuve_id)
-    return render(request, 'épreuves/apercu.html', {'epreuve': epreuve})
-
 def apropos(request):
     return render(request, 'apropos.html')
 
-def apercu_fiche(request, fiche_id):
-    fiche = get_object_or_404(FicheCours, pk=fiche_id)
-    return render(request, 'apercu_fiche.html', {'fiche': fiche})
-
+@login_required
 def telecharger_fiche(request, fiche_id):
     fiche = get_object_or_404(FicheCours, id=fiche_id)
 
@@ -292,8 +282,6 @@ def contenus_populaires(request):
     )[:15]  # Limiter aux 15 plus populaires
     
     return render(request, 'contenus_populaires.html', {'contenus': contenus})
-
-    
 
 def epreuves_recentes(request):
     epreuves = Epreuve.objects.order_by('-created_at')[:10]
@@ -371,6 +359,7 @@ def guides_formation(request):
     }
     return render(request, 'guides_formation.html', context)
 
+@login_required
 def telecharger_guide(request, guide_id):
     guide = get_object_or_404(GuideFormation, id=guide_id)
     guide.telechargements += 1
@@ -393,6 +382,7 @@ def arretes(request):
     arretes = Arrete.objects.order_by('-date_publication')
     return render(request, 'arretes.html', {'arretes': arretes})
 
+@login_required
 def telecharger_arrete(request, arrete_id):
     arrete = get_object_or_404(Arrete, id=arrete_id)
 
@@ -460,3 +450,20 @@ def register(request):
 def mes_documents(request):
     documents = request.user.documents.all()
     return render(request, 'mes_documents.html', {'documents': documents})
+
+@login_required
+def telecharger_corrige(request, epreuve_id):
+    epreuve = get_object_or_404(Epreuve, id=epreuve_id)
+
+    if not epreuve.fichier_corrige:
+        raise Http404("Corrigé non disponible pour cette épreuve.")
+
+    url_signed = cloudinary.utils.cloudinary_url(
+        epreuve.fichier_corrige.name,
+        resource_type='raw',
+        sign_url=True,
+        attachment=True,
+        expires=86400
+    )[0]
+
+    return redirect(url_signed)

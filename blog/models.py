@@ -17,6 +17,7 @@ class Epreuve(models.Model):
     niveau = models.CharField(max_length=100, choices=NIVEAUX, default='Tle')
     titre = models.CharField(max_length=255)
     fichier = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
+    fichier_corrige = models.FileField(storage=MediaCloudinaryStorage(), blank=True, null=True)
     prix = models.DecimalField(max_digits=6, decimal_places=2)
     matiere = models.ForeignKey(Matiere, on_delete=models.CASCADE)
     annee = models.CharField(max_length=10, default='2024')

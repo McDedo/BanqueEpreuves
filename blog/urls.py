@@ -20,12 +20,12 @@ urlpatterns = [
 
     # Epreuves
     path('epreuves/', views.liste_epreuves, name='epreuves'),
-    path('epreuve/<int:epreuve_id>/apercu/', views.apercu_epreuve, name='apercu_epreuve'),
     path('epreuve/<int:epreuve_id>/telecharger/', views.telecharger_epreuve, name='telecharger_epreuve'),
+    path('epreuve/<int:epreuve_id>/corrige/', views.telecharger_corrige, name='telecharger_corrige'),
+
 
     # Fiches de cours
     path('fiches-cours/', views.fiches_cours, name='fiches_cours'),
-    path('fiche/<int:fiche_id>/apercu/', views.apercu_fiche, name='apercu_fiche'),
     path('fiche/<int:fiche_id>/telecharger/', views.telecharger_fiche, name='telecharger_fiche'),
 
     # Guides de formation
