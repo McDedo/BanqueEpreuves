@@ -13,7 +13,9 @@
             <h5 class="card-title">{{ epreuve.titre }}</h5>
             <p>{{ epreuve.annee }} · {{ epreuve.niveau }}</p>
             <div class="d-flex justify-content-between">
-              <a href="{% url 'aperçu_epreuve' epreuve.id %}" class="btn btn-outline-secondary">Aperçu</a>
+              {% if contenu.lien_drive_corrige %}
+                <a href="{% url 'telecharger_corrige' contenu.id %}" class="btn btn-outline-secondary">Corrigé</a>
+              {% endif %}
               <a href="{% url 'telecharger_epreuve' epreuve.id %}" class="btn btn-primary">Télécharger</a>
             </div>
           </div>
