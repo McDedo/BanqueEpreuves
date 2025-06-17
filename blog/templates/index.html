@@ -114,7 +114,7 @@
             </p>
             <div class="d-flex justify-content-between">
               {% if contenu.type_contenu == "epreuve" %}
-                {% if contenu.fichier_corrige %}
+                {% if contenu.lien_drive_corrige %}
                   <a href="{% url 'telecharger_corrige' contenu.id %}" class="btn btn-outline-secondary">Corrigé</a>
                 {% endif %}
                   <a href="{% url 'telecharger_epreuve' contenu.id %}" class="btn btn-primary">Télécharger</a>

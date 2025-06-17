@@ -11,13 +11,13 @@ from operator import attrgetter
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.http import Http404
-import re
-import cloudinary
-import cloudinary.utils
 from .utils import get_matiere_icon
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, Http404
+import requests
+
 
 
 def home(request):
@@ -155,18 +155,20 @@ def telecharger_epreuve(request, epreuve_id):
     epreuve.telechargements += 1
     epreuve.save()
 
-    if not epreuve.fichier:
-        raise Http404("Fichier introuvable.")
-    
-    url_signed = cloudinary.utils.cloudinary_url(
-        epreuve.fichier.name,
-        resource_type='raw',  # fichier non image (pdf, doc...)
-        sign_url=True,
-        attachment=True,
-        expires=86400
-    )[0]
+    url = epreuve.lien_telechargement()
 
-    return redirect(url_signed)
+    if not url:
+        raise Http404("Lien de téléchargement introuvable.")
+
+    r = requests.get(url, stream=True)
+    if r.status_code != 200:
+        raise Http404("Impossible de récupérer le fichier.")
+    
+    response = HttpResponse(r.raw, content_type=r.headers.get('Content-Type', 'application/octet-stream'))
+    response['Content-Disposition'] = f'attachment; filename="{epreuve.titre}.pdf"'  # ou autre extension
+    
+    return response
+    
 
 def liste_matieres(request):
     matieres = Matiere.objects.all()
@@ -248,18 +250,12 @@ def telecharger_fiche(request, fiche_id):
     fiche.telechargements += 1
     fiche.save()
     
-    if not fiche.fichier:
-        raise Http404("Fichier introuvable.")
-    
-    url_signed = cloudinary.utils.cloudinary_url(
-        fiche.fichier.name,
-        resource_type='raw',  # fichier non image (pdf, doc...)
-        sign_url=True,
-        attachment=True,
-        expires=86400
-    )[0]
+    url = fiche.lien_telechargement()
 
-    return redirect(url_signed)
+    if not url:
+        raise Http404("Lien de téléchargement introuvable.")
+    
+    return redirect(url)
     
 
 def contenus_populaires(request):
@@ -365,18 +361,12 @@ def telecharger_guide(request, guide_id):
     guide.telechargements += 1
     guide.save()
 
-    if not guide.fichier:
-        raise Http404("Fichier introuvable.")
-    
-    url_signed = cloudinary.utils.cloudinary_url(
-        guide.fichier.name,
-        resource_type='raw',
-        sign_url=True,
-        attachment=True,
-        expires=86400
-    )[0]
+    url = guide.lien_telechargement()
 
-    return redirect(url_signed)
+    if not url:
+        raise Http404("Lien de téléchargement introuvable.")
+    
+    return redirect(url)
 
 def arretes(request):
     arretes = Arrete.objects.order_by('-date_publication')
@@ -386,18 +376,12 @@ def arretes(request):
 def telecharger_arrete(request, arrete_id):
     arrete = get_object_or_404(Arrete, id=arrete_id)
 
-    if not arrete.fichier:
-        raise Http404("Fichier introuvable.")
-    
-    url_signed = cloudinary.utils.cloudinary_url(
-        arrete.fichier.name,
-        resource_type='raw',
-        sign_url=True,
-        attachment=True,
-        expires=86400
-    )[0]
+    url = arrete.lien_telechargement()
 
-    return redirect(url_signed)
+    if not url:
+        raise Http404("Lien de téléchargement introuvable.")
+    
+    return redirect(url)
 
 def actualites(request):
     query = request.GET.get('q')
@@ -454,16 +438,9 @@ def mes_documents(request):
 @login_required
 def telecharger_corrige(request, epreuve_id):
     epreuve = get_object_or_404(Epreuve, id=epreuve_id)
+    url = epreuve.lien_telechargement_corrige()
 
-    if not epreuve.fichier_corrige:
+    if not url:
         raise Http404("Corrigé non disponible pour cette épreuve.")
 
-    url_signed = cloudinary.utils.cloudinary_url(
-        epreuve.fichier_corrige.name,
-        resource_type='raw',
-        sign_url=True,
-        attachment=True,
-        expires=86400
-    )[0]
-
-    return redirect(url_signed)
+    return redirect(url)
