@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Initialiser environ
 env = environ.Env(
     # valeurs par défaut et types pour tes variables, exemple :
-    DEBUG=(bool, True),
+    DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, [])
 )
 
