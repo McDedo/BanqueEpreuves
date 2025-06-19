@@ -165,7 +165,7 @@ def telecharger_epreuve(request, epreuve_id):
         raise Http404("Impossible de récupérer le fichier.")
     
     response = HttpResponse(r.raw, content_type=r.headers.get('Content-Type', 'application/octet-stream'))
-    response['Content-Disposition'] = f'attachment; filename="{epreuve.titre}.pdf"'  # ou autre extension
+    response['Content-Disposition'] = f'attachment; filename="{epreuve.titre}.pdf"' 
     
     return response
     
@@ -194,7 +194,7 @@ def contact(request):
             f"Message de contact de {nom}",
             message,
             email,
-            ['banqueepreuves@gmail.com'],
+            ['actucoursepreuves@gmail.com'],
             fail_silently=False,
         )
         messages.success(request, "Merci pour votre message, nous vous répondrons bientôt.")
@@ -315,9 +315,6 @@ def conditions_utilisation(request):
 
 def politique_confidentialite(request):
     return render(request, 'politique_confidentialite.html')
-
-def mentions_legales(request):
-    return render(request, 'mentions_legales.html')
 
 def cookies(request):
     return render(request, 'cookies.html')

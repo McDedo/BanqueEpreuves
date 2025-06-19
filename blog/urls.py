@@ -53,7 +53,6 @@ urlpatterns = [
     # Légal 
     path('conditions/', views.conditions_utilisation, name='conditions_utilisation'),
     path('politique/', views.politique_confidentialite, name='politique_confidentialite'),
-    path('mentions/', views.mentions_legales, name='mentions_legales'),
     path('cookies/', views.cookies, name='cookies'),
 
     # Contenus populaires et récents

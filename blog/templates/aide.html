@@ -1,8 +1,55 @@
 {% extends 'base.html' %}
 
+{% block title %}Aide{% endblock %}
+
 {% block content %}
 <div class="container my-5">
-  <h2>Aide</h2>
-  <p>Cette page vous fournit de l’aide pour naviguer et utiliser notre site.</p>
+  <h1 class="mb-4">Centre d'Aide</h1>
+
+  <p>Bienvenue sur Banque d'Épreuves, votre plateforme de vente de documents académiques téléchargeables. Cette page vous guide pour utiliser efficacement notre site.</p>
+
+  <hr>
+
+  <h2>1. Création de votre compte</h2>
+  <p>Pour télécharger des documents, vous devez d'abord créer un compte :</p>
+  <ul>
+    <li>Cliquez sur le lien <strong>« Connexion »</strong> en haut du site.</li>
+    <li>Puis cliquez sur <strong>« Créer un compte »</strong>.</li>
+    <li>Remplissez le formulaire d’inscription avec vos informations.</li>
+    <li>Cliquez sur <strong>« Connexion »</strong> une fois l’inscription terminée.</li>
+  </ul>
+
+  <h2>2. Télécharger un document</h2>
+  <p>Après vous être connecté :</p>
+  <ul>
+    <li>Parcourez les documents disponibles selon vos besoins.</li>
+    <li>Cliquez sur le bouton <strong>« Télécharger »</strong> situé sous le document de votre choix.</li>
+    <li>Si le document est payant, vous serez redirigé vers la page de paiement.</li>
+  </ul>
+
+  <h2>3. Moyens de paiement disponibles</h2>
+  <p>Nous proposons deux options sécurisées pour régler vos achats :</p>
+  <ol>
+    <li><strong>Mobile Money</strong> (Orange Money, Moov, MTN... selon votre pays).</li>
+    <li><strong>Carte bancaire</strong> (Visa, Mastercard, etc.).</li>
+  </ol>
+
+  <h2>4. Rechercher un document</h2>
+  <p>Pour trouver un document spécifique :</p>
+  <ul>
+    <li>Utilisez le module de recherche sur la page d’accueil.</li>
+    <li>Sélectionnez :
+      <ul>
+        <li>La <strong>catégorie</strong> du document,</li>
+        <li>Le <strong>niveau d’étude</strong>,</li>
+        <li>L’<strong>année</strong>,</li>
+        <li>La <strong>matière</strong>.</li>
+      </ul>
+    </li>
+    <li>Puis cliquez sur <strong>« Rechercher »</strong>.</li>
+  </ul>
+
+  <h2>5. Besoin d’aide supplémentaire ?</h2>
+  <p>Vous pouvez nous contacter à tout moment via la page <a href="{% url 'contact' %}">Contact</a> ou en envoyant un mail à : <a href="mailto:actucoursepreuves@gmail.com">actucoursepreuves@gmail.com</a>.</p>
 </div>
 {% endblock %}
