@@ -1,1 +1,1 @@
-web: gunicorn banque_epreuves.wsgi:application
+web: ./wait-for-postgres.sh && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn banque_epreuves.wsgi:application
