@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from cloudinary_storage.storage import MediaCloudinaryStorage
 from .constants import NIVEAUX
 import re
 

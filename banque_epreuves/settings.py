@@ -20,12 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialiser environ
 env = environ.Env(
-    # valeurs par défaut et types pour tes variables, exemple :
-    DEBUG=(bool, False),
+    # Définir les types de variables d'environnement attendues
+    DEBUG=(bool, False), 
     ALLOWED_HOSTS=(list, [])
 )
 
 environ.Env.read_env(env_file=BASE_DIR / '.env')
+print("DEBUG =", env('DEBUG'))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -158,10 +160,12 @@ LOGOUT_REDIRECT_URL = '/login/'
     #'API_SECRET': env('CLOUDINARY_API_SECRET'),
 #} 
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Configuration de l'email
 
@@ -171,3 +175,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'actucoursepreuves@gmail.com'
 EMAIL_HOST_PASSWORD = 'mot_de_passe_application'  
+
