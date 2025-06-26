@@ -26,7 +26,11 @@ env = environ.Env(
 )
 
 if Path(BASE_DIR / '.env').exists():
-    environ.Env.read_env(env_file=BASE_DIR / '.env')
+    print("Chargement de .env local")
+    env.read_env(BASE_DIR / '.env')
+else:
+    print("Utilisation des variables d'environnement du système")
+    #environ.Env.read_env(env_file=BASE_DIR / '.env')
 
 
 print("=== ENV DEBUG ===")
