@@ -32,6 +32,13 @@ else:
     print("Utilisation des variables d'environnement du système")
     #environ.Env.read_env(env_file=BASE_DIR / '.env')
 
+import os
+
+print("🔍 VARIABLES REÇUES PAR DJANGO :")
+for k in ["SECRET_KEY", "DEBUG", "DATABASE_URL", "ALLOWED_HOSTS"]:
+    print(f"{k} = {os.environ.get(k, '--- NON DÉFINIE ---')}")
+print("======================")
+
 
 print("=== ENV DEBUG ===")
 print("SECRET_KEY:", env('SECRET_KEY', default='none'))
