@@ -29,6 +29,12 @@ if Path(BASE_DIR / '.env').exists():
     environ.Env.read_env(env_file=BASE_DIR / '.env')
 
 
+print("=== ENV DEBUG ===")
+print("SECRET_KEY:", env('SECRET_KEY', default='none'))
+print("DEBUG:", env.bool('DEBUG', default=False))
+print("DATABASE_URL:", env('DATABASE_URL', default='none'))
+print("ALLOWED_HOSTS:", env.list('ALLOWED_HOSTS', default=[]))
+print("=================")
 
 
 
@@ -40,7 +46,8 @@ SECRET_KEY = env('SECRET_KEY', default='clé-par-défaut-invalide')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-DEBUG = env('DEBUG')
+#DEBUG = env('DEBUG')
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
