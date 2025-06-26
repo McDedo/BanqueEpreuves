@@ -1,1 +1,1 @@
-web: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn banque_epreuves.wsgi:application
+web: gunicorn banque_epreuves.wsgi:application
