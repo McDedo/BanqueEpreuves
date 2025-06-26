@@ -13,4 +13,9 @@ from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'banque_epreuves.settings')
 
+
+print("🔧 DJANGO_SETTINGS_MODULE:", os.getenv("DJANGO_SETTINGS_MODULE"))
+print("🔧 SECRET_KEY:", os.getenv("SECRET_KEY"))
+
+
 application = get_wsgi_application()
