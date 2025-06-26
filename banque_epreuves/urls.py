@@ -18,9 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from blog import views
+from django.http import HttpResponse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
     path('register/', views.register, name='register'),
+]
+
+urlpatterns += [
+    path("test-health/", lambda request: HttpResponse("✅ App running")),
 ]
