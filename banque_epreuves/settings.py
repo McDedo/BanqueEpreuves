@@ -25,8 +25,10 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, [])
 )
 
-environ.Env.read_env(env_file=BASE_DIR / '.env')
-print("DEBUG =", env('DEBUG'))
+if Path(BASE_DIR / '.env').exists():
+    environ.Env.read_env(env_file=BASE_DIR / '.env')
+
+
 
 
 
