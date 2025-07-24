@@ -9,7 +9,13 @@
             <strong>Filtres appliqués :</strong>
             {% if categorie %}Catégorie : {{ categorie }}{% endif %}
             {% if niveau %} • Niveau : {{ niveau }}{% endif %}
-            {% if matiere_id %} • Matière ID : {{ matiere_id }}{% endif %}
+            {% if matiere_id %}
+                {% for m in matieres %}
+                    {% if m.id|stringformat:"s" == matiere_id %}
+                        • Matière : {{ m.nom }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             {% if annee %} • Année : {{ annee }}{% endif %}
         </div>
     {% endif %}
