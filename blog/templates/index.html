@@ -90,12 +90,16 @@
 
           <!-- Année -->
           <div class="col-12 col-md-auto">
-            <select class="form-select" name="annee" style="min-width: 140px;">
-              <option value="">Toutes les années</option>
-              {% for annee in annees %}
-                <option value="{{ annee }}">{{ annee }}</option>
-              {% endfor %}
-            </select>
+            <input
+              type="number"
+              name="annee"
+              class="form-control"
+              placeholder="Ex: 2024"
+              min="1960"
+              max="{{ current_year }}"
+              value="{{ annee }}"
+              style="min-width: 140px;"
+            >              
           </div>
 
           <!-- Bouton -->

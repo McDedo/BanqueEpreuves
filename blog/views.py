@@ -85,41 +85,64 @@ def contenu_par_matiere(request, id):
         "guides": guides,
     }) 
 
-def rechercher(request):
-    query = request.GET.get('q', '')
-    categorie = request.GET.get('categorie', '')
+from .models import Epreuve, FicheCours, Matiere
+from django.db.models import Q
 
+def rechercher(request):
+    # Récupérer les paramètres GET
+    categorie = request.GET.get('categorie', '')
+    niveau = request.GET.get('niveau', '')
+    matiere_id = request.GET.get('matiere', '')
+    annee = request.GET.get('annee', '')
+
+    # Base QuerySet
     epreuves = Epreuve.objects.all()
     fiches = FicheCours.objects.all()
-    
-    if query:
-        epreuves = epreuves.filter(
-            Q(titre__icontains=query) |
-            Q(matiere__nom__icontains=query) |
-            Q(niveau__icontains=query) |
-            Q(annee__icontains=query)
-        ).distinct()
-        
-        fiches = fiches.filter(
-            Q(titre__icontains=query) |
-            Q(matiere__nom__icontains=query) |
-            Q(niveau__icontains=query) |
-            Q(annee__icontains=query)
-        ).distinct()
-    
-    if categorie:
-        epreuves = epreuves.filter(niveau__iexact=categorie)
-        fiches = fiches.filter(niveau__iexact=categorie)
-            
+
+    # Filtrage par niveau
+    if niveau:
+        epreuves = epreuves.filter(niveau__iexact=niveau)
+        fiches = fiches.filter(niveau__iexact=niveau)
+
+    # Filtrage par matière (par ID)
+    if matiere_id:
+        epreuves = epreuves.filter(matiere__id=matiere_id)
+        fiches = fiches.filter(matiere__id=matiere_id)
+
+    # Filtrage par année
+    if annee:
+        epreuves = epreuves.filter(annee=annee)
+        fiches = fiches.filter(annee=annee)
+
+    # Filtrage par type de contenu (catégorie)
+    if categorie == 'Epreuve':
+        fiches = fiches.none()
+        guides = GuideFormation.objects.none() 
+    elif categorie == 'Fiches_cours':
+        epreuves = epreuves.none()
+    elif categorie == 'Guide_formation':
+        epreuves = epreuves.none()
+        fiches = fiches.none()
+       
+
+    # Pour afficher les filtres sélectionnés
+    matieres = Matiere.objects.all().order_by('nom')
+    annees = Epreuve.objects.values_list('annee', flat=True).distinct().order_by('-annee')
 
     context = {
-        'query': query,
         'categorie': categorie,
+        'niveau': niveau,
+        'matiere_id': matiere_id,
+        'annee': annee,
         'epreuves': epreuves,
-        'fiches': fiches
+        'fiches': fiches,
+        'matieres': matieres,
+        'annees': annees,
     }
 
     return render(request, 'rechercher.html', context)
+
+    
 
 def liste_epreuves(request):
     epreuves = Epreuve.objects.all()
