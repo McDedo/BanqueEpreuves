@@ -37,6 +37,16 @@
           <div class="col-12 col-md-auto">
             <select class="form-select" name="categorie" style="min-width: 180px;">
               <option value="">Toutes les catégories</option>
+              <option value="Epreuve">Épreuves</option>
+              <option value="Fiches_cours">Fiches de cours</option>
+              <option value="Guide_formation">Guides de formation</option>
+            </select>
+          </div>
+
+          <!-- Niveau -->
+          <div class="col-12 col-md-auto">
+            <select class="form-select" name="niveau" style="min-width: 180px;">
+              <option value="">Tous les niveaux</option>
               <optgroup label="Maternelle">
                 <option value="M1">Maternelle 1</option>
                 <option value="M2">Maternelle 2</option>
@@ -68,9 +78,24 @@
             </select>
           </div>
 
-          <!-- Champ de recherche -->
-          <div class="col-12 col-md">
-            <input type="text" name="q" class="form-control" placeholder="Rechercher par matière, niveau ou année..." />
+          <!-- Matière -->
+          <div class="col-12 col-md-auto">
+            <select class="form-select" name="matiere" style="min-width: 180px;">
+              <option value="">Toutes les matières</option>
+              {% for matiere in matieres %}
+                <option value="{{ matiere.id }}">{{ matiere.nom }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Année -->
+          <div class="col-12 col-md-auto">
+            <select class="form-select" name="annee" style="min-width: 140px;">
+              <option value="">Toutes les années</option>
+              {% for annee in annees %}
+                <option value="{{ annee }}">{{ annee }}</option>
+              {% endfor %}
+            </select>
           </div>
 
           <!-- Bouton -->
@@ -85,7 +110,6 @@
     </div>
   </div>
 </section>
-
 
 
 <!-- Section : Contenus populaires -->
