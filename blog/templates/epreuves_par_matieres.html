@@ -16,30 +16,10 @@
           <p class="card-text">Niveau : {{ epreuve.niveau }}</p>
 
           <div class="mt-auto d-flex justify-content-between">
-            <a href="{{ epreuve.fichier.url }}" target="_blank" class="btn btn-sm btn-outline-secondary">Aperçu</a>
-            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ epreuve.id }}">
-              Télécharger
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal prix -->
-    <div class="modal fade" id="modal{{ epreuve.id }}" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Téléchargement de "{{ epreuve.titre }}"</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-          </div>
-          <div class="modal-body">
-            <p>Cette épreuve coûte <strong>{{ epreuve.prix }} €</strong>.</p>
-            <p>Souhaitez-vous procéder au téléchargement ?</p>
-          </div>
-          <div class="modal-footer">
-            <a href="{{ epreuve.fichier.url }}" download class="btn btn-success">Payer et Télécharger</a>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            {% if epreuve.lien_drive_corrige %}
+            <a href="{% url 'telecharger_corrige' epreuve.id %}" class="btn btn-sm btn-outline-success">Corrigé</a>
+            {% endif %}
+            <a href="{% url 'telecharger_epreuve' epreuve.id %}" class="btn btn-primary">Télécharger</a>
           </div>
         </div>
       </div>
@@ -66,9 +46,7 @@
           {% endif %}
 
           <div class="mt-auto d-flex justify-content-end">
-            <a href="{{ fiche.fichier.url }}" download class="btn btn-sm btn-primary">
-              Télécharger
-            </a>
+            <a href="{% url 'telecharger_fiche' fiche.id %}" class="btn btn-primary">Télécharger</a>
           </div>
         </div>
       </div>

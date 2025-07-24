@@ -13,7 +13,6 @@
             <h5 class="card-title">{{ fiche.titre }}</h5>
             <p>{{ fiche.matiere.nom }} · {{ fiche.niveau }}</p>
             <div class="d-flex justify-content-between">
-              <a href="{% url 'aperçu_fiche' fiche.id %}" class="btn btn-outline-secondary">Aperçu</a>
               <a href="{% url 'telecharger_fiche' fiche.id %}" class="btn btn-primary">Télécharger</a>
             </div>
           </div>
