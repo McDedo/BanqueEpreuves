@@ -9,16 +9,8 @@
             <strong>Filtres appliqués :</strong>
             {% if categorie %}Catégorie : {{ categorie }}{% endif %}
             {% if niveau %} • Niveau : {{ niveau }}{% endif %}
-            {% if matiere_id %} • Matière : {{ matiere_id }}{% endif %}
+            {% if matiere_id %} • Matière ID : {{ matiere_id }}{% endif %}
             {% if annee %} • Année : {{ annee }}{% endif %}
-        </div>
-
-    {% if query or categorie %}
-        <div class="alert alert-info">
-            Critères appliqués :
-            {% if query %}<strong>Recherche</strong> : "{{ query }}"{% endif %}
-            {% if query and categorie %} • {% endif %}
-            {% if categorie %}<strong>Catégorie</strong> : {{ categorie }}{% endif %}
         </div>
     {% endif %}
 
@@ -30,7 +22,7 @@
                     <div class="card p-3">
                         <h5>{{ epreuve.titre }}</h5>
                         <p class="text-muted">{{ epreuve.matiere.nom }} • {{ epreuve.niveau }}</p>
-                        <a href="{{ epreuve.fichier.url }}" download class="btn btn-primary btn-sm mt-2">
+                        <a href="{{ epreuve.lien_drive }}" class="btn btn-primary btn-sm mt-2" target="_blank" rel="noopener">
                             Télécharger
                         </a>
                     </div>
@@ -47,7 +39,7 @@
                     <div class="card p-3">
                         <h5>{{ fiche.titre }}</h5>
                         <p class="text-muted">{{ fiche.matiere.nom }} • {{ fiche.niveau }}</p>
-                        <a href="{{ fiche.fichier.url }}" download class="btn btn-secondary btn-sm mt-2">
+                        <a href="{{ fiche.fichier.url }}" class="btn btn-secondary btn-sm mt-2" download>
                             Télécharger
                         </a>
                     </div>
@@ -56,7 +48,24 @@
         </div>
     {% endif %}
 
-    {% if not epreuves.exists and not fiches.exists %}
+    {% if guides.exists %}
+        <h3>Guides de formation</h3>
+        <div class="row">
+            {% for guide in guides %}
+                <div class="col-md-6 mb-3">
+                    <div class="card p-3">
+                        <h5>{{ guide.titre }}</h5>
+                        <p class="text-muted">{{ guide.matiere.nom }} • {{ guide.niveau }}</p>
+                        <a href="{{ guide.fichier.url }}" class="btn btn-success btn-sm mt-2" download>
+                            Télécharger
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if not epreuves.exists and not fiches.exists and not guides.exists %}
         <p class="text-muted">Aucun résultat trouvé.</p>
     {% endif %}
 </div>

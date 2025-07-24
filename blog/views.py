@@ -88,6 +88,9 @@ def contenu_par_matiere(request, id):
 from .models import Epreuve, FicheCours, Matiere
 from django.db.models import Q
 
+
+from .models import Epreuve, FicheCours, GuideFormation, Matiere
+
 def rechercher(request):
     # Récupérer les paramètres GET
     categorie = request.GET.get('categorie', '')
@@ -98,34 +101,38 @@ def rechercher(request):
     # Base QuerySet
     epreuves = Epreuve.objects.all()
     fiches = FicheCours.objects.all()
+    guides = GuideFormation.objects.all()
 
     # Filtrage par niveau
     if niveau:
         epreuves = epreuves.filter(niveau__iexact=niveau)
         fiches = fiches.filter(niveau__iexact=niveau)
+        guides = guides.filter(niveau__iexact=niveau)
 
     # Filtrage par matière (par ID)
     if matiere_id:
         epreuves = epreuves.filter(matiere__id=matiere_id)
         fiches = fiches.filter(matiere__id=matiere_id)
+        guides = guides.filter(matiere__id=matiere_id)
 
     # Filtrage par année
     if annee:
         epreuves = epreuves.filter(annee=annee)
         fiches = fiches.filter(annee=annee)
+        guides = guides.filter(annee=annee)
 
     # Filtrage par type de contenu (catégorie)
     if categorie == 'Epreuve':
         fiches = fiches.none()
-        guides = GuideFormation.objects.none() 
+        guides = guides.none()
     elif categorie == 'Fiches_cours':
         epreuves = epreuves.none()
+        guides = guides.none()
     elif categorie == 'Guide_formation':
         epreuves = epreuves.none()
         fiches = fiches.none()
-       
 
-    # Pour afficher les filtres sélectionnés
+    # Pour les listes de filtres dynamiques
     matieres = Matiere.objects.all().order_by('nom')
     annees = Epreuve.objects.values_list('annee', flat=True).distinct().order_by('-annee')
 
@@ -136,6 +143,7 @@ def rechercher(request):
         'annee': annee,
         'epreuves': epreuves,
         'fiches': fiches,
+        'guides': guides,
         'matieres': matieres,
         'annees': annees,
     }
