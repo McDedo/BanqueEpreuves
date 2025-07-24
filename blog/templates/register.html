@@ -4,8 +4,21 @@
 {% block content %}
 <div class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow rounded-4">
+    <div class="col-lg-10 col-xl-8">
+      <!-- Présentation -->
+      <div id="presentation-section" class="text-center mb-5">
+        <h2 class="fw-bold mb-3 text-primary">
+          Des ressources scolaires pour apprendre, enseigner et s’informer.
+        </h2>
+        <p class="lead">
+          Préparez vos examens ou vos cours avec une plateforme riche en épreuves, ressources pédagogiques et actualités scolaires.<br>
+          Rejoignez des milliers d’élèves, d’étudiants et d’enseignants qui utilisent ActuCoursEpreuves pour réussir et faire réussir.
+        </p>
+        <button id="start-btn" class="btn btn-primary btn-lg mt-4">➡ Commencer</button>
+      </div>
+
+      <!-- Formulaire d'inscription -->
+      <div id="register-form-section" class="card shadow rounded-4 d-none">
         <div class="card-body p-4">
           <h2 class="card-title text-center text-primary mb-4">Créer un compte</h2>
 
@@ -52,4 +65,18 @@
     </div>
   </div>
 </div>
+
+<!-- Script JavaScript -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const startBtn = document.getElementById("start-btn");
+    const presentationSection = document.getElementById("presentation-section");
+    const registerForm = document.getElementById("register-form-section");
+
+    startBtn.addEventListener("click", function () {
+      presentationSection.classList.add("d-none");
+      registerForm.classList.remove("d-none");
+    });
+  });
+</script>
 {% endblock %}
