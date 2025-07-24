@@ -128,70 +128,15 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'home' %}">Accueil</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMatieres" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Matières
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMatieres">
-              <li><a class="dropdown-item" href="{% url 'fiches_cours' %}">Fiches de Cours</a></li>
-              <li><a class="dropdown-item" href="{% url 'epreuves' %}">Épreuves</a></li>
-              <li><a class="dropdown-item" href="{% url 'guides_formation' %}">Guides de formation</a></li>
-              <li><a class="dropdown-item" href="{% url 'arretes' %}">Arrêtés</a></li>
-            </ul>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'liste_matieres' %}">Matières</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'contact' %}">Contact</a>
           </li>
         </ul>
 
-        <!-- Barre de recherche -->
-        <form class="d-flex align-items-center ms-3 flex-wrap" method="get" action="{% url 'rechercher' %}">
-
-          <!-- Choix de la catégorie -->
-          <div class="me-2 mb-2">
-            <select class="form-select" name="categorie" style="min-width: 180px;">
-              <option value="">Toutes les catégories</option>
-              <optgroup label="Maternelle">
-                <option value="M1"> Maternelle 1 </option>
-                <option value="M2"> Maternelle 2 </option>
-              </optgroup>
-              <optgroup label="Primaire">
-                <option value="CI">CI</option>
-                <option value="CP">CP</option>
-                <option value="CE1">CE1</option>
-                <option value="CE2">CE2</option>
-                <option value="CM1">CM1</option>
-                <option value="CM2">CM2</option>
-              </optgroup>
-              <optgroup label="Secondaire">
-                <option value="6e">6e</option>
-                <option value="5e">5e</option>
-                <option value="4e">4e</option>
-                <option value="3e">3e</option>
-                <option value="2nde">2nde</option>
-                <option value="1ere">1ère</option>
-                <option value="Tle">Terminale</option>
-              </optgroup>
-              <optgroup label="Université">
-                <option value="Licence1">Licence 1</option>
-                <option value="Licence2">Licence 2</option>
-                <option value="Licence3">Licence 3</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <!-- Champ texte libre -->
-          <div class="me-2 mb-2">
-            <input class="form-control search-input" type="search" name="q" placeholder="Rechercher un sujet..." aria-label="Rechercher" style="min-width: 200px;">
-          </div>
-
-          <!-- Bouton de soumission -->
-          <div class="mb-2">
-            <button class="btn btn-outline-primary search-btn" type="submit">
-              <i class="bi bi-search"></i>
-            </button>
-          </div>
-        </form>
+        
 
         <!-- Connexion / Profil -->
         <ul class="navbar-nav ms-3">

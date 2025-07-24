@@ -38,7 +38,9 @@ urlpatterns = [
 
     # Matieres
     path('matieres/', views.liste_matieres, name='liste_matieres'),
-    path('matiere/<int:matiere_id>/', views.epreuves_par_matiere, name='epreuves_par_matiere'),
+    #path("matieres/<int:id>/epreuves/", views.epreuves_par_matiere, name="epreuves_par_matiere"),
+    path("matieres/<int:id>/contenu/", views.contenu_par_matiere, name="contenu_par_matiere"),
+
 
     # Recherche
     path('rechercher/', views.rechercher, name='rechercher'),

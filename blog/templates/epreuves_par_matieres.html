@@ -79,6 +79,34 @@
     <div class="alert alert-info">Aucune fiche de cours disponible pour cette matière pour le moment.</div>
   {% endif %}
 
+  <!-- Section Guides de formation -->
+  <h2 class="mb-4 text-primary mt-5">Guides de formation de {{ matiere.nom }}</h2>
+
+  {% if guides %}
+  <div class="row">
+    {% for guide in guides %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ guide.titre }}</h5>
+          <p class="card-text">Niveau : {{ guide.niveau }}</p>
+          {% if guide.description %}
+          <div>
+            <p class="card-text">{{ guide.description|linebreaks }}</p>
+          </div>
+          {% endif %}
+          <a href="{% url 'telecharger_guide' guide.id %}" class="btn btn-primary mt-3">
+            <i class="bi bi-download"></i> Télécharger
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="alert alert-info">Aucun guide de formation disponible pour cette matière pour le moment.</div>
+  {% endif %}
+
   <!-- Bouton retour -->
   <a href="{% url 'home' %}" class="btn btn-outline-primary mt-4">⬅ Retour à l'accueil</a>
 

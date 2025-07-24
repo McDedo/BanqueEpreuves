@@ -205,7 +205,7 @@
     <!-- Blocs de matières cliquables -->
     <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: space-between;">
       {% for matiere in matieres %}
-        <a href="{% url 'epreuves_par_matiere' matiere.id %}" style="text-decoration: none; color: inherit; flex: 1; min-width: 160px; max-width: 200px;">
+        <a href="{% url 'contenu_par_matiere' matiere.id %}" style="text-decoration: none; color: inherit; flex: 1; min-width: 160px; max-width: 200px;">
           <div style="background-color: white; padding: 2rem; border-radius: 0.75rem; text-align: center; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
             <div style="font-size: 2rem;">{{ matiere.icon }}</div>
             <div style="font-weight: bold; margin-top: 0.5rem;">{{ matiere.nom }}</div>

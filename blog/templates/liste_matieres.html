@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section class="py-12 bg-gray-50">
-  <div class="max-w-6xl mx-auto px-4">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">Toutes les matières</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<section class="py-12 bg-light">
+  <div class="container">
+    <h1 class="text-center text-primary mb-5">Toutes les matières</h1>
+
+    <div class="row">
       {% for matiere in matieres %}
-        <a href="{% url 'epreuves_par_matiere' matiere.id %}" class="block bg-white shadow-md hover:shadow-xl rounded-xl p-6 transition transform hover:-translate-y-1">
-          <div class="text-4xl mb-3 text-center">{{ matiere.icon }}</div>
-          <h2 class="text-xl font-semibold text-center">{{ matiere.nom }}</h2>
-          <p class="text-gray-500 text-sm text-center mt-1">{{ matiere.epreuve_set.count }} épreuves</p>
-        </a>
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm rounded-4 h-100">
+          <div class="card-body text-center">
+            <div class="mb-2 fs-1">{{ matiere.icon }}</div>
+            <h5 class="card-title">{{ matiere.nom }}</h5>
+            <div class="d-grid gap-2 mt-3">
+              <a href="{% url 'contenu_par_matiere' matiere.id %}" class="btn btn-outline-primary btn-sm">
+                Voir les ressources
+              </a>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
       {% endfor %}
     </div>
   </div>

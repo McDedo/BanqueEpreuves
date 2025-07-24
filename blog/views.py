@@ -61,18 +61,29 @@ def home(request):
     })
 
 
-def epreuves_par_matiere(request, matiere_id):
-    matiere = get_object_or_404(Matiere, id=matiere_id)
+#def epreuves_par_matiere(request, matiere_id):
+    #matiere = get_object_or_404(Matiere, id=matiere_id)
+    #epreuves = Epreuve.objects.filter(matiere=matiere)
+    #fiches = FicheCours.objects.filter(matiere=matiere)
+    #context = {
+     #   'epreuves': epreuves,
+      #  'matiere': matiere,
+       # 'fiches': fiches,
+    #}
+    #return render(request, 'epreuves_par_matiere.html', context)
+
+def contenu_par_matiere(request, id):
+    matiere = get_object_or_404(Matiere, pk=id)
     epreuves = Epreuve.objects.filter(matiere=matiere)
     fiches = FicheCours.objects.filter(matiere=matiere)
-    context = {
-        'epreuves': epreuves,
-        'matiere': matiere,
-        'fiches': fiches,
-    }
-    return render(request, 'epreuves_par_matiere.html', context)
+    guides = GuideFormation.objects.filter(matiere=matiere)
 
- 
+    return render(request, "epreuves_par_matieres.html", {
+        "matiere": matiere,
+        "epreuves": epreuves,
+        "fiches": fiches,
+        "guides": guides,
+    }) 
 
 def rechercher(request):
     query = request.GET.get('q', '')
