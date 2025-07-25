@@ -228,6 +228,39 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+def guides_formation(request):
+    guides = GuideFormation.objects.all()
+    matieres = Matiere.objects.all()
+    niveaux = GuideFormation.objects.values_list('niveau', flat=True).distinct()
+
+    query = request.GET.get('q')
+    niveau = request.GET.get('niveau')
+    matiere_id = request.GET.get('matiere')
+    
+    if query:
+        guides = guides.filter(
+            Q(titre__icontains=query) |
+            Q(annee__icontains=query) |
+            Q(niveau__icontains=query) |
+            Q(matiere__nom__icontains=query)
+        )
+
+    for guide in guides:
+        guide.icone = get_matiere_icon(guide.matiere.nom)
+
+    if niveau:
+        guides = guides.filter(niveau=niveau)
+
+    if matiere_id:
+        guides = guides.filter(matiere__id=matiere_id)
+
+    context = {
+        'guides': guides,
+        'matieres': matieres,
+        'niveaux': niveaux,
+    }
+    return render(request, 'guides_formation.html', context)
+
 def contact(request):
     if request.method == "POST":
         nom = request.POST.get('nom')
@@ -305,11 +338,11 @@ def telecharger_fiche(request, fiche_id):
     
 
 def contenus_populaires(request):
-    epreuves = Epreuve.objects.all()
-    fiches = FicheCours.objects.all()
-    guides = Guide.objects.all()
+    epreuves = Epreuve.objects.select_related('matiere').all()
+    fiches = FicheCours.objects.select_related('matiere').all()
+    guides = GuideFormation.objects.select_related('matiere').all()
 
-    # Ajouter des attributs dynamiques
+    # Ajouter attributs dynamiques
     for e in epreuves:
         e.type_contenu = 'epreuve'
         e.icon = get_matiere_icon(e.matiere.nom if e.matiere else "")
@@ -322,19 +355,21 @@ def contenus_populaires(request):
         g.type_contenu = 'guide'
         g.icon = get_matiere_icon(g.matiere.nom if g.matiere else "")
 
-    # Fusionner et trier tous les contenus
-    tous_les_contenus = sorted(
-        chain(epreuves, fiches, guides),
-        key=attrgetter('telechargements'),
-        reverse=True
-    )
+    # Fusionner tout et regrouper par matière
+    tous_les_contenus = list(chain(epreuves, fiches, guides))
+    contenus_par_matiere = {}
 
-    # Pagination
-    paginator = Paginator(tous_les_contenus, 8)  # 8 contenus par page
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    for contenu in tous_les_contenus:
+        matiere = contenu.matiere.nom if contenu.matiere else "Autres"
+        contenus_par_matiere.setdefault(matiere, []).append(contenu)
 
-    return render(request, 'contenus_populaires.html', {'page_obj': page_obj})
+    # Trier les contenus de chaque matière par téléchargements
+    for matiere, contenus in contenus_par_matiere.items():
+        contenus.sort(key=attrgetter('telechargements'), reverse=True)
+
+    return render(request, 'contenus_populaires.html', {
+        'contenus_par_matiere': contenus_par_matiere
+    })
 
 def epreuves_recentes(request):
     epreuves = Epreuve.objects.order_by('-created_at')[:10]
@@ -376,38 +411,7 @@ def politique_confidentialite(request):
 def cookies(request):
     return render(request, 'cookies.html')
 
-def guides_formation(request):
-    guides = GuideFormation.objects.all()
-    matieres = Matiere.objects.all()
-    niveaux = GuideFormation.objects.values_list('niveau', flat=True).distinct()
 
-    query = request.GET.get('q')
-    niveau = request.GET.get('niveau')
-    matiere_id = request.GET.get('matiere')
-    
-    if query:
-        guides = guides.filter(
-            Q(titre__icontains=query) |
-            Q(annee__icontains=query) |
-            Q(niveau__icontains=query) |
-            Q(matiere__nom__icontains=query)
-        )
-
-    for guide in guides:
-        guide.icone = get_matiere_icon(guide.matiere.nom)
-
-    if niveau:
-        guides = guides.filter(niveau=niveau)
-
-    if matiere_id:
-        guides = guides.filter(matiere__id=matiere_id)
-
-    context = {
-        'guides': guides,
-        'matieres': matieres,
-        'niveaux': niveaux,
-    }
-    return render(request, 'guides_formation.html', context)
 
 @login_required
 def telecharger_guide(request, guide_id):

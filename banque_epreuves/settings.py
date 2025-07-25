@@ -19,12 +19,11 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialise environ
-#env = environ.Env(
- #   DEBUG=(bool, False),  
-  #  ALLOWED_HOSTS=(list, []),  
-#)
-
-
+env = environ.Env(
+    DEBUG=(bool, False),  
+    ALLOWED_HOSTS=(list, []),  
+)
+environ.Env.read_env(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -34,19 +33,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = "True"
-#DEBUG = env('DEBUG')
-#DEBUG = env.bool('DEBUG', default=False)
-
-import environ
-
-env = environ.Env()
-environ.Env.read_env()
+DEBUG = env('DEBUG')
+DEBUG = env.bool("DEBUG", default=False)
 
 
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env.bool("DEBUG", default=False)
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
-ALLOWED_HOSTS = ['McDedo.pythonanywhere.com', '127.0.0.1', 'localhost']
-SECRET_KEY = "django-insecure-7!+6&ez&d8vxk-rf$@f&nb#m2au@t26^-vv1k2dz_=5c7w4*rjs"
 
 # Application definition
 
@@ -98,16 +92,11 @@ WSGI_APPLICATION = 'banque_epreuves.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-# DATABASES = {
-   # 'default': env.db('DATABASE_URL')  # Utilise la variable d'environnement DATABASE_URL
-#}
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': env.db('DATABASE_URL')  # Utilise la variable d'environnement DATABASE_URL
 }
+
+
 
 
 # Password validation
