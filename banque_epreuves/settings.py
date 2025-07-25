@@ -34,12 +34,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = "True"
 #DEBUG = env('DEBUG')
 #DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['McDedo.pythonanywhere.com']
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
+
+
+
+ALLOWED_HOSTS = ['McDedo.pythonanywhere.com', '127.0.0.1', 'localhost']
+SECRET_KEY = "django-insecure-7!+6&ez&d8vxk-rf$@f&nb#m2au@t26^-vv1k2dz_=5c7w4*rjs"
 
 # Application definition
 

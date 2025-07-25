@@ -24,9 +24,61 @@
     </div>
   </div>
 </section>
-         
 
-<!-- Deuxième section : barre de recherche ajustée -->
+<!-- Section : À la une + blocs -->
+<section class="py-5 bg-white border-top">
+  <div class="container">
+    <div class="mb-5">
+      <h3 class="fw-bold">À la une</h3>
+    </div>
+
+    <div class="row justify-content-center g-4">
+      <!-- Bloc 1 : Épreuves récentes -->
+      <div class="col-md-4">
+        <div class="bg-light p-4 rounded text-center h-100">
+          <div style="font-size: 2rem;">🆕</div>
+          <h4 class="fw-bold mt-3">Épreuves récentes</h4>
+          <p class="text-muted my-3">
+            Accédez aux dernières épreuves des examens et concours nationaux.
+          </p>
+          <a href="{% url 'epreuves_recentes' %}" class="text-primary fw-semibold text-decoration-none">
+            Voir les nouveautés ➡
+          </a>
+        </div>
+      </div>
+
+      <!-- Bloc 2 : Fiches de cours récentes -->
+      <div class="col-md-4">
+        <div class="bg-light p-4 rounded text-center h-100">
+          <div style="font-size: 2rem;">🆕</div>
+          <h4 class="fw-bold mt-3">Fiches de cours récentes</h4>
+          <p class="text-muted my-3">
+            Découvrez les dernières fiches de cours pour réviser efficacement vos matières.
+          </p>
+          <a href="{% url 'fiches_recentes' %}" class="text-primary fw-semibold text-decoration-none">
+            Explorer les fiches ➡
+          </a>
+        </div>
+      </div>
+
+      <!-- Bloc 3 : Actualités scolaires -->
+      <div class="col-md-4">
+        <div class="bg-light p-4 rounded text-center h-100">
+          <div style="font-size: 2rem;">📰</div>
+          <h4 class="fw-bold mt-3">Actualités du monde scolaire</h4>
+          <p class="text-muted my-3">
+            Restez informé des dernières nouvelles, réformes et annonces dans le secteur éducatif.
+          </p>
+          <a href="{% url 'actualites' %}" class="text-primary fw-semibold text-decoration-none">
+            Voir les actualités ➡
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>         
+
+<!-- section : barre de recherche ajustée -->
 <section class="py-5 bg-white border-top">
   <div class="container">
     <div class="row justify-content-center">
@@ -162,69 +214,13 @@
 
 
 <!-- Section :  -->
-<section style="background-color: white; padding: 4rem 0; text-align: center;">
-  <div class="container mx-auto px-4">
-    <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem;">
-      Toutes vos ressources scolaires, en un seul endroit.
-    </h2>
-    <p style="color: #6B7280; font-size: 1.1rem; max-width: 700px; margin: 0 auto;">
-      Avec ActuCoursEpreuves, accédez librement à des épreuves, des cours et des outils pédagogiques pour réussir vos examens en toute confiance.
-    </p>
-  </div>
-</section>
 
-
-<!-- Section : -->
-<section style="background-color: white; padding: 4rem 0;">
-  <div style="display: flex; justify-content: space-around; gap: 1.5rem; flex-wrap: wrap;" class="container mx-auto px-4">
-    
-    <!-- Bloc 1 : Épreuves récentes -->
-    <div style="background-color: #f3f4f6; padding: 2rem; border-radius: 0.75rem; flex: 1; min-width: 280px; text-align: center;">
-      <div style="font-size: 2rem; margin-bottom: 1rem;">🆕</div>
-      <h3 style="font-weight: bold; font-size: 1.25rem;">Épreuves récentes</h3>
-      <p style="color: #6B7280; margin: 1rem 0;">
-        Accédez aux dernières épreuves des examens et concours nationaux.
-      </p>
-      <a href="{% url 'epreuves_recentes' %}" style="color: #2563eb; font-weight: 500; text-decoration: none;">
-        Voir les nouveautés ➡
-      </a>
-    </div>
-
-    <!-- Bloc 2 : Fiches de cours récentes -->
-    <div style="background-color: #f3f4f6; padding: 2rem; border-radius: 0.75rem; flex: 1; min-width: 280px; text-align: center;">
-      <div style="font-size: 2rem; margin-bottom: 1rem;">🆕</div>
-      <h3 style="font-weight: bold; font-size: 1.25rem;">Fiches de cours récentes</h3>
-      <p style="color: #6B7280; margin: 1rem 0;">
-        Découvrez les dernières fiches de cours pour réviser efficacement vos matières.
-      </p>
-      <a href="{% url 'fiches_recentes' %}" style="color: #2563eb; font-weight: 500; text-decoration: none;">
-        Explorer les fiches ➡
-      </a>
-    </div>
-
-    <!-- Bloc 3 : Actualités du monde scolaire -->
-    <div style="background-color: #f3f4f6; padding: 2rem; border-radius: 0.75rem; flex: 1; min-width: 280px; text-align: center;">
-      <div style="font-size: 2rem; margin-bottom: 1rem;">📰</div>
-      <h3 style="font-weight: bold; font-size: 1.25rem;">Actualités du monde scolaire</h3>
-      <p style="color: #6B7280; margin: 1rem 0;">
-        Restez informé des dernières nouvelles, réformes et annonces dans le secteur éducatif.
-      </p>
-      <a href="{% url 'actualites' %}" style="color: #2563eb; font-weight: 500; text-decoration: none;">
-        Voir les actualités ➡
-      </a>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- Section : Parcourir par matière -->
 <section style="background-color: #f3f4f6; padding: 4rem 0;">
   <div class="container mx-auto px-4">
 
     <!-- Titre + Lien -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-      <h2 style="font-weight: bold; font-size: 1.5rem;">Parcourir par matière</h2>
+      <h2 style="font-weight: bold; font-size: 1.5rem;">Toutes vos ressources scolaires, en un clic.</h2>
       <a href="{% url 'liste_matieres' %}" style="color: #6B21A8; text-decoration: none; font-weight: 500;" onmouseover="this.style.color='#9333EA'" onmouseout="this.style.color='#6B21A8'">
         Voir tout ➡
       </a>

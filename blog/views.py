@@ -197,6 +197,8 @@ def telecharger_epreuve(request, epreuve_id):
     epreuve.telechargements += 1
     epreuve.save()
 
+    epreuve.utilisateurs_telechargeurs.add(request.user)
+
     url = epreuve.lien_telechargement()
 
     if not url:
@@ -207,7 +209,7 @@ def telecharger_epreuve(request, epreuve_id):
         raise Http404("Impossible de récupérer le fichier.")
     
     response = HttpResponse(r.raw, content_type=r.headers.get('Content-Type', 'application/octet-stream'))
-    response['Content-Disposition'] = f'attachment; filename="{epreuve.titre}.pdf"' 
+    response['Content-Disposition'] = f'attachment; filename="{epreuve.titre}.pdf"'
     
     return response
     
@@ -291,6 +293,8 @@ def telecharger_fiche(request, fiche_id):
 
     fiche.telechargements += 1
     fiche.save()
+
+    fiche.utilisateurs_telechargeurs.add(request.user)
     
     url = fiche.lien_telechargement()
 
@@ -303,7 +307,9 @@ def telecharger_fiche(request, fiche_id):
 def contenus_populaires(request):
     epreuves = Epreuve.objects.all()
     fiches = FicheCours.objects.all()
+    guides = Guide.objects.all()
 
+    # Ajouter des attributs dynamiques
     for e in epreuves:
         e.type_contenu = 'epreuve'
         e.icon = get_matiere_icon(e.matiere.nom if e.matiere else "")
@@ -311,15 +317,24 @@ def contenus_populaires(request):
     for f in fiches:
         f.type_contenu = 'fiche'
         f.icon = get_matiere_icon(f.matiere.nom if f.matiere else "")
-    
 
-    contenus = sorted(
-        chain(epreuves, fiches),
+    for g in guides:
+        g.type_contenu = 'guide'
+        g.icon = get_matiere_icon(g.matiere.nom if g.matiere else "")
+
+    # Fusionner et trier tous les contenus
+    tous_les_contenus = sorted(
+        chain(epreuves, fiches, guides),
         key=attrgetter('telechargements'),
         reverse=True
-    )[:15]  # Limiter aux 15 plus populaires
-    
-    return render(request, 'contenus_populaires.html', {'contenus': contenus})
+    )
+
+    # Pagination
+    paginator = Paginator(tous_les_contenus, 8)  # 8 contenus par page
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'contenus_populaires.html', {'page_obj': page_obj})
 
 def epreuves_recentes(request):
     epreuves = Epreuve.objects.order_by('-created_at')[:10]
@@ -400,6 +415,8 @@ def telecharger_guide(request, guide_id):
     guide.telechargements += 1
     guide.save()
 
+    guide.utilisateurs_telechargeurs.add(request.user)
+
     url = guide.lien_telechargement()
 
     if not url:
@@ -416,6 +433,8 @@ def telecharger_arrete(request, arrete_id):
     arrete = get_object_or_404(Arrete, id=arrete_id)
 
     url = arrete.lien_telechargement()
+
+    arrete.utilisateurs_telechargeurs.add(request.user)
 
     if not url:
         raise Http404("Lien de téléchargement introuvable.")
@@ -471,13 +490,22 @@ def register(request):
 
 @login_required
 def mes_documents(request):
-    documents = request.user.documents.all()
-    return render(request, 'mes_documents.html', {'documents': documents})
+    epreuves = Epreuve.objects.filter(utilisateurs_telechargeurs=request.user)
+    fiches = FicheCours.objects.filter(utilisateurs_telechargeurs=request.user)
+    guides = GuideFormation.objects.filter(utilisateurs_telechargeurs=request.user)
+
+    return render(request, "mes_documents.html", {
+        "epreuves": epreuves,
+        "fiches": fiches,
+        "guides": guides,
+    })
 
 @login_required
 def telecharger_corrige(request, epreuve_id):
     epreuve = get_object_or_404(Epreuve, id=epreuve_id)
     url = epreuve.lien_telechargement_corrige()
+
+    epreuve.utilisateurs_telechargeurs.add(request.user)
 
     if not url:
         raise Http404("Corrigé non disponible pour cette épreuve.")

@@ -5,15 +5,16 @@
 <section class="py-5 bg-white border-top">
   <div class="container">
     <div class="mb-4">
-      <h2 class="fw-bold">Les 15 contenus les plus populaires</h2>
-      <p class="text-muted">Épreuves et fiches de cours les plus téléchargées</p>
+      <h2 class="fw-bold">Contenus les plus populaires</h2>
+      <p class="text-muted">Triés par nombre de téléchargements</p>
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-      {% for contenu in contenus_populaires %}
+      {% for contenu in page_obj %}
       <div class="col">
         <div class="card h-100 shadow-sm border-0">
-          <div class="card-img-top d-flex justify-content-center align-items-center bg-light" style="height: 160px; font-size: 4rem;">
+          <div class="card-img-top d-flex justify-content-center align-items-center bg-light"
+               style="height: 160px; font-size: 4rem;">
             {{ contenu.icon }}
           </div>
 
@@ -26,13 +27,19 @@
             <p class="mb-2">
               <strong>{{ contenu.niveau }}</strong> · {{ contenu.telechargements }} téléchargements
             </p>
+
             <div class="d-flex justify-content-between">
               {% if contenu.type_contenu == "epreuve" %}
-                <a href="{% url 'aperçu_epreuve' contenu.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
-                <a href="{% url 'telecharger_epreuve' contenu.id %}" class="btn btn-primary">Télécharger</a>
-              {% else %}
-                <a href="{% url 'aperçu_fiche' contenu.id %}" class="btn btn-outline-secondary apercu-btn">Aperçu</a>
-                <a href="{% url 'telecharger_fiche' contenu.id %}" class="btn btn-primary">Télécharger</a>
+                {% if contenu.lien_drive_corrige %}
+                  <a href="{% url 'telecharger_corrige' contenu.id %}" class="btn btn-outline-secondary btn-sm">Corrigé</a>
+                {% endif %}
+                <a href="{% url 'telecharger_epreuve' contenu.id %}" class="btn btn-primary btn-sm">Télécharger</a>
+
+              {% elif contenu.type_contenu == "fiche" %}
+                <a href="{% url 'telecharger_fiche' contenu.id %}" class="btn btn-primary btn-sm">Télécharger</a>
+
+              {% elif contenu.type_contenu == "guide" %}
+                <a href="{% url 'telecharger_guide' contenu.id %}" class="btn btn-primary btn-sm">Télécharger</a>
               {% endif %}
             </div>
           </div>
@@ -40,14 +47,37 @@
       </div>
       {% endfor %}
     </div>
-  </div>
-  <div class="container mt-5 text-center">
-    <a href="{% url 'home' %}" class="btn btn-outline-primary">
-        ⬅ Revenir à l'accueil
-    </a>
-  </div>
 
+    <!-- Pagination -->
+    <div class="mt-5 d-flex justify-content-center">
+      <nav aria-label="Pagination">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">← Précédent</a>
+            </li>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant →</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Retour à l'accueil -->
+    <div class="text-center mt-4">
+      <a href="{% url 'home' %}" class="btn btn-outline-primary">⬅ Revenir à l'accueil</a>
+    </div>
+
+  </div>
 </section>
 {% endblock %}
-
-
