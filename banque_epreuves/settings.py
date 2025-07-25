@@ -12,25 +12,17 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Initialiser environ
-env = environ.Env(
-    # Définir les types de variables d'environnement attendues
-    DEBUG=(bool, False), 
-    ALLOWED_HOSTS=(list, [])
-)
-
-if Path(BASE_DIR / '.env').exists():
-    print("Chargement de .env local")
-    env.read_env(BASE_DIR / '.env')
-else:
-    print("Utilisation des variables d'environnement du système")
-    #environ.Env.read_env(env_file=BASE_DIR / '.env')
+# Initialise environ
+#env = environ.Env(
+ #   DEBUG=(bool, False),  
+  #  ALLOWED_HOSTS=(list, []),  
+#)
 
 
 
@@ -39,14 +31,14 @@ else:
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY', default='clé-par-défaut-invalide')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 #DEBUG = env('DEBUG')
-DEBUG = env.bool('DEBUG', default=False)
+#DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+ALLOWED_HOSTS = ['McDedo.pythonanywhere.com']
 
 
 # Application definition
@@ -99,8 +91,15 @@ WSGI_APPLICATION = 'banque_epreuves.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
+# DATABASES = {
+   # 'default': env.db('DATABASE_URL')  # Utilise la variable d'environnement DATABASE_URL
+#}
+
 DATABASES = {
-    'default': env.db('DATABASE_URL')  # Utilise la variable d'environnement DATABASE_URL
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -158,13 +157,6 @@ LOGIN_REDIRECT_URL = '/mes-documents/'
 
 LOGOUT_REDIRECT_URL = '/login/'
 
-#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# CLOUDINARY_STORAGE = {
-   # 'CLOUD_NAME': env('CLOUDINARY_CLOUD_NAME'),
-   # 'API_KEY': env('CLOUDINARY_API_KEY'),
-    #'API_SECRET': env('CLOUDINARY_API_SECRET'),
-#} 
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -180,5 +172,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'actucoursepreuves@gmail.com'
-EMAIL_HOST_PASSWORD = 'mot_de_passe_application'  
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  
 
