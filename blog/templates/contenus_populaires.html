@@ -9,6 +9,40 @@
       <p class="text-muted">Triés par nombre de téléchargements</p>
     </div>
 
+    <!-- Filtres -->
+    <form method="get" class="row g-3 mb-5">
+      <div class="col-12 col-md-auto">
+        <select name="matiere" class="form-select">
+          <option value="">Toutes les matières</option>
+          {% for m in matieres %}
+            <option value="{{ m.id }}" {% if request.GET.matiere == m.id|stringformat:"s" %}selected{% endif %}>{{ m.nom }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12 col-md-auto">
+        <select name="niveau" class="form-select">
+          <option value="">Tous les niveaux</option>
+          {% for n in niveaux %}
+            <option value="{{ n }}" {% if request.GET.niveau == n %}selected{% endif %}>{{ n }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12 col-md-auto">
+        <select name="annee" class="form-select">
+          <option value="">Toutes les années</option>
+          {% for a in annees %}
+            <option value="{{ a }}" {% if request.GET.annee == a|stringformat:"s" %}selected{% endif %}>{{ a }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-12 col-md-auto">
+        <button type="submit" class="btn btn-primary">Filtrer</button>
+      </div>
+    </form>
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
       {% for contenu in page_obj %}
       <div class="col">
@@ -54,19 +88,37 @@
         <ul class="pagination">
           {% if page_obj.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">← Précédent</a>
+              <a class="page-link" 
+                href="?page={{ page_obj.has_previous_page_number }}
+                  {% if request.GET.matiere %}&matiere={{ request.GET.matiere }}{% endif %}
+                  {% if request.GET.niveau %}&niveau={{ request.GET.niveau }}{% endif %}
+                  {% if request.GET.annee %}&annee={{ request.GET.annee }}{% endif %}">
+                 ← Précédent
+              </a>
             </li>
           {% endif %}
 
           {% for num in page_obj.paginator.page_range %}
             <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              <a class="page-link" 
+                  href="?page={{ num }}
+                    {% if request.GET.matiere %}&matiere={{ request.GET.matiere }}{% endif %}
+                    {% if request.GET.niveau %}&niveau={{ request.GET.niveau }}{% endif %}
+                    {% if request.GET.annee %}&annee={{ request.GET.annee }}{% endif %}">
+                   {{ num }}
+              </a>
             </li>
           {% endfor %}
 
           {% if page_obj.has_next %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Suivant →</a>
+              <a class="page-link" 
+                href="?page={{ page_obj.next_page_number }}
+                  {% if request.GET.matiere %}&matiere={{ request.GET.matiere }}{% endif %}
+                  {% if request.GET.niveau %}&niveau={{ request.GET.niveau }}{% endif %}
+                  {% if request.GET.annee %}&annee={{ request.GET.annee }}{% endif %}">
+                Suivant →
+              </a>
             </li>
           {% endif %}
         </ul>

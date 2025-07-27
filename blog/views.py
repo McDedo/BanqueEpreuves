@@ -17,6 +17,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 import requests
+from itertools import chain
+from collections import defaultdict
 
 
 
@@ -50,14 +52,21 @@ def home(request):
         f.icon = get_matiere_icon(f.matiere.nom if f.matiere else "")
 
     contenus = sorted(
-        chain(epreuves, fiches),
-        key=attrgetter('telechargements'),
-        reverse=True
-    )[:5]  # Limiter aux 5 plus populaires
+    chain(epreuves, fiches),
+    key=lambda c: (c.annee if c.annee else '', c.telechargements),
+    reverse=True
+    )[:5]   # Limiter aux 5 plus populaires
+
+    contenus_par_annee = defaultdict(list)
+
+    for c in sorted(chain(epreuves, fiches), key=lambda x: (x.annee if x.annee else '', x.telechargements), reverse=True):
+        contenus_par_annee[c.annee].append(c)
+
 
     return render(request, 'index.html', {
         'matieres': matieres,
         'contenus_populaires': contenus,
+        'contenus_par_annee': dict(contenus_par_annee),
     })
 
 
@@ -338,11 +347,37 @@ def telecharger_fiche(request, fiche_id):
     
 
 def contenus_populaires(request):
+    matiere_id = request.GET.get('matiere')
+    niveau = request.GET.get('niveau')
+    annee = request.GET.get('annee')
+
+
+    matieres = Matiere.objects.all()
+    niveaux = [
+        "Maternelle 1", "Maternelle 2", "CI", "CP", "CE1", "CE2", "CM1", "CM2",
+        "6e", "5e", "4e", "3e", "2nde", "1ere", "Tle",
+        "Licence1", "Licence2", "Licence3"
+    ]
+
     epreuves = Epreuve.objects.select_related('matiere').all()
     fiches = FicheCours.objects.select_related('matiere').all()
     guides = GuideFormation.objects.select_related('matiere').all()
 
-    # Ajouter attributs dynamiques
+    if matiere_id:
+        epreuves = epreuves.filter(matiere__id=matiere_id)
+        fiches = fiches.filter(matiere__id=matiere_id)
+        guides = guides.filter(matiere__id=matiere_id)
+
+    if niveau:
+        epreuves = epreuves.filter(niveau=niveau)
+        fiches = fiches.filter(niveau=niveau)
+        guides = guides.filter(niveau=niveau)
+
+    if annee:
+        epreuves = epreuves.filter(annee=annee)
+        fiches = fiches.filter(annee=annee)
+        guides = guides.filter(annee=annee)
+
     for e in epreuves:
         e.type_contenu = 'epreuve'
         e.icon = get_matiere_icon(e.matiere.nom if e.matiere else "")
@@ -355,21 +390,32 @@ def contenus_populaires(request):
         g.type_contenu = 'guide'
         g.icon = get_matiere_icon(g.matiere.nom if g.matiere else "")
 
-    # Fusionner tout et regrouper par matière
-    tous_les_contenus = list(chain(epreuves, fiches, guides))
-    contenus_par_matiere = {}
+    annees_epreuves = Epreuve.objects.values_list('annee', flat=True).distinct()
+    annees_fiches = FicheCours.objects.values_list('annee', flat=True).distinct()
+    annees_guides = GuideFormation.objects.values_list('annee', flat=True).distinct()
 
-    for contenu in tous_les_contenus:
-        matiere = contenu.matiere.nom if contenu.matiere else "Autres"
-        contenus_par_matiere.setdefault(matiere, []).append(contenu)
+    annees = sorted(set(annees_epreuves) | set(annees_fiches) | set(annees_guides), reverse=True)
 
-    # Trier les contenus de chaque matière par téléchargements
-    for matiere, contenus in contenus_par_matiere.items():
-        contenus.sort(key=attrgetter('telechargements'), reverse=True)
 
-    return render(request, 'contenus_populaires.html', {
-        'contenus_par_matiere': contenus_par_matiere
-    })
+    tous_les_contenus = sorted(
+        chain(epreuves, fiches, guides),
+        key=attrgetter('telechargements'),
+        reverse=True
+    )
+
+    paginator = Paginator(tous_les_contenus, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+        'matieres': matieres,
+        'niveaux': niveaux,
+        'annees': annees,
+    }
+
+    return render(request, 'contenus_populaires.html', context)
+
 
 def epreuves_recentes(request):
     epreuves = Epreuve.objects.order_by('-created_at')[:10]
